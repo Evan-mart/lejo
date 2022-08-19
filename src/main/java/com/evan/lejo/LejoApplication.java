@@ -1,4 +1,4 @@
-package com.evan.lejo.lejo;
+package com.evan.lejo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +8,6 @@ public class LejoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LejoApplication.class, args);
-	}
 
+	}
 }

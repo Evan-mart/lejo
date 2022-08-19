@@ -1,4 +1,4 @@
-package com.evan.lejo.lejo;
+package com.evan.lejo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
