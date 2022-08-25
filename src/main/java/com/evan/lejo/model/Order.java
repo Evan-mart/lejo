@@ -1,31 +1,27 @@
 package com.evan.lejo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "`order`")
+@Table( name = "`order`" )
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private long id;
 
-    @Column(name = "account_id", nullable = false)
-    private Long accountId;
-
-    @Column(name = "created_at")
+    @Column( name = "created_at" )
     private ZonedDateTime createdAt;
 
+    @ManyToOne( cascade = CascadeType.PERSIST )
+    @JoinColumn( name = "account_id", nullable = false )
+    private Account account;
 
-    public Order() {}
 
-    public Order(Long accountId) {
-        this.accountId = accountId;
-        this.createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
+    public Order() {
+        this.createdAt = ZonedDateTime.now( ZoneId.of( "UTC" ) );
     }
 
 
@@ -33,23 +29,45 @@ public class Order {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public Account getAccount() {
+        return account;
     }
 
-    public Long getAccountId() {
-        return accountId;
+
+    public Order setAccount( Account account ) {
+        this.account = account;
+
+        return this;
     }
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
 
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(ZonedDateTime createdAt) {
+
+    public void setCreatedAt( ZonedDateTime createdAt ) {
         this.createdAt = createdAt;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

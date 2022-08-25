@@ -1,7 +1,5 @@
 package com.evan.lejo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -14,7 +12,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "user_name")
     private String userName;
@@ -31,29 +29,19 @@ public class Account {
     @Column(name = "account_information_id", nullable = false)
     private Long accountInformationId;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
-    @JsonIgnore
-    private List<Order> orders = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
+    private final List<Order> orders;
 
-    public Account() {}
 
-    public Account(
-            String userName,
-            String password
-    ) {
-        this.userName = userName;
-        this.password = password;
-        this.createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
-        this.lastConnection = ZonedDateTime.now(ZoneId.of("UTC"));
+    public Account() {
+        createdAt = ZonedDateTime.now(ZoneId.of("UTC"));
+        lastConnection = ZonedDateTime.now(ZoneId.of("UTC"));
+        orders = new ArrayList<>();
     }
 
 
-    public Long getId() {
+    public long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserName() {
@@ -100,7 +88,38 @@ public class Account {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public Account addOrder(Order order) {
+        if (orders.contains( order )) {
+            return this;
+        }
+
+        orders.add( order );
+
+        return this;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
