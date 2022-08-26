@@ -23,22 +23,11 @@ public class AccountInformation {
     private String postCode;
 
     @Column( name = "created_at" )
-    private ZonedDateTime createdAt;
+    private final ZonedDateTime createdAt;
 
 
-    public AccountInformation(
-            String email,
-            String mobile,
-            String address,
-            String city,
-            String postCode
-    ) {
-        this.email    = email;
-        this.mobile   = mobile;
-        this.address  = address;
-        this.city     = city;
-        this.postCode = postCode;
-        createdAt     = ZonedDateTime.now( ZoneId.of( "UTC" ) );
+    public AccountInformation() {
+        createdAt = ZonedDateTime.now( ZoneId.of( "UTC" ) );
     }
 
 
