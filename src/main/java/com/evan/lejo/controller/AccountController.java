@@ -7,7 +7,6 @@ import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.model.Account;
 import com.evan.lejo.repository.AccountRepository;
-import com.evan.lejo.repository.jpa.AccountJpa;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ import java.util.Map;
 public class AccountController {
 
     protected final Create< Account >  createAccount;
-    protected final Update< Account >  updateAccountUserName;
+    protected final Update< Account >  updateAccountUsername;
     protected final Update< Account >  updateAccountPassword;
     protected final AccountRepository  accountRepository;
     protected final DataStorageHandler dataStorageHandler;
@@ -28,16 +27,16 @@ public class AccountController {
 
 
     public AccountController(
-            AccountJpa accountRepository,
             Create< Account > createAccount,
-            Update< Account > updateAccountUserName,
+            Update< Account > updateAccountUsername,
             Update< Account > updateAccountPassword,
+            AccountRepository accountRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
         this.createAccount         = createAccount;
-        this.updateAccountUserName = updateAccountUserName;
+        this.updateAccountUsername = updateAccountUsername;
         this.updateAccountPassword = updateAccountPassword;
-        this.accountRepository     = ( AccountRepository ) accountRepository;
+        this.accountRepository     = accountRepository;
         this.dataStorageHandler    = dataStorageHandler;
         this.request               = request;
     }
@@ -72,7 +71,7 @@ public class AccountController {
     public ResponseEntity< Map< String, Object > > updateAccountUserName( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
-        updateAccountUserName.update( request, account );
+        updateAccountUsername.update( request, account );
 
         dataStorageHandler.save();
 
@@ -85,7 +84,7 @@ public class AccountController {
     public ResponseEntity< Map< String, Object > > updateAccountPassword( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
-        updateAccountUserName.update( request, account );
+        updateAccountUsername.update( request, account );
 
         dataStorageHandler.save();
 

@@ -1,19 +1,21 @@
 package com.evan.lejo.repository;
 
 import com.evan.lejo.model.Order;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.evan.lejo.repository.jpa.OrderJpa;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-public class OrderRepositoryImpl extends AbstractRepository< Order > implements OrderRepository{
+@Service
+public class OrderRepositoryImpl extends AbstractRepository< Order > implements OrderRepository {
 
     public OrderRepositoryImpl(
             EntityManager entityManager,
-            JpaRepository jpaRepository ) {
-        super( entityManager, jpaRepository );
+            OrderJpa orderJpa ) {
+        super( entityManager, orderJpa );
     }
 
 

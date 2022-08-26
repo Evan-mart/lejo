@@ -1,38 +1,44 @@
 package com.evan.lejo.model;
 
+import com.evan.lejo.configuration.response.Error;
+import com.evan.lejo.exception.HttpUnprocessableEntityException;
+
 import javax.persistence.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Entity
 public class AccountInformation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private long id;
 
     private String email;
     private String mobile;
     private String address;
     private String city;
 
-    @Column(name = "post_code")
-    private Long postCode;
+    @Column( name = "post_code" )
+    private String postCode;
 
+    @Column( name = "created_at" )
+    private ZonedDateTime createdAt;
 
-    public AccountInformation() {
-    }
 
     public AccountInformation(
             String email,
             String mobile,
             String address,
             String city,
-            Long postCode
+            String postCode
     ) {
-        this.email = email;
-        this.mobile = mobile;
-        this.address = address;
-        this.city = city;
+        this.email    = email;
+        this.mobile   = mobile;
+        this.address  = address;
+        this.city     = city;
         this.postCode = postCode;
+        createdAt     = ZonedDateTime.now( ZoneId.of( "UTC" ) );
     }
 
 
@@ -40,47 +46,78 @@ public class AccountInformation {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+
+    public void setEmail( String email ) {
         this.email = email;
     }
+
 
     public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(String mobile) {
+
+    public void setMobile( String mobile ) {
+        if ( mobile == null || mobile.isBlank() ) {
+            throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_MOBILE_REQUIRED );
+        }
+
+        if ( mobile.length() != 10 ) {
+            throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_MOBILE_INVALID );
+        }
+
         this.mobile = mobile;
     }
+
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+
+    public void setAddress( String address ) {
+        if ( address == null || address.isBlank() ) {
+            throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_ADDRESS_REQUIRED );
+        }
+
         this.address = address;
     }
+
 
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+
+    public void setCity( String city ) {
+        if ( city == null || city.isBlank() ) {
+            throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_CITY_REQUIRED );
+        }
+
         this.city = city;
     }
 
-    public Long getPostCode() {
+
+    public String getPostCode() {
         return postCode;
     }
 
-    public void setPostCode(Long postCode) {
+
+    public void setPostCode( String postCode ) {
+        if ( postCode == null || postCode.isBlank() ) {
+            throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_POSTCODE_REQUIRED );
+        }
+
         this.postCode = postCode;
+    }
+
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
     }
 }
