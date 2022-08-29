@@ -59,7 +59,7 @@ public class AccountInformation {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_MOBILE_REQUIRED );
         }
 
-        if ( mobile.length() != 10 ) {
+        if ( mobile.length() > 10 ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_MOBILE_INVALID );
         }
 
