@@ -9,7 +9,10 @@ import com.evan.lejo.model.Dish;
 import com.evan.lejo.repository.DishRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.transaction.Transactional;
 import java.util.Map;
@@ -17,8 +20,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController
-@RequestMapping( "/dish" )
+/*@RestController
+@RequestMapping( "/dish" )*/
 public class DishController {
 
     protected final Create< Dish >     createDish;

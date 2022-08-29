@@ -17,14 +17,12 @@ public class Account {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
-    @Column( name = "user_name" )
-    private String userName;
+    private String username;
 
-    @Column( name = "password" )
     private String password;
 
     @Column( name = "created_at", nullable = false )
-    private ZonedDateTime createdAt;
+    private final ZonedDateTime createdAt;
 
     @Column( name = "last_connection", nullable = false )
     private ZonedDateTime lastConnection;
@@ -48,17 +46,19 @@ public class Account {
     }
 
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
 
-    public void setUserName( String userName ) {
-        if ( userName == null || userName.isBlank() ) {
+    public Account setUserName( String username ) {
+        if ( username == null || username.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_USERNAME_REQUIRED );
         }
 
-        this.userName = userName;
+        this.username = username;
+
+        return this;
     }
 
 
@@ -67,12 +67,14 @@ public class Account {
     }
 
 
-    public void setPassword( String password ) {
+    public Account setPassword( String password ) {
         if ( password == null || password.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_PASSWORD_REQUIRED );
         }
 
         this.password = password;
+
+        return this;
     }
 
 

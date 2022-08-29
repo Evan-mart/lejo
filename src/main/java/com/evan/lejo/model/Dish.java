@@ -58,6 +58,10 @@ public class Dish {
 
 
     public void setPrice( Double price ) {
+        if ( price < 0 ) {
+            throw new HttpUnprocessableEntityException( Error.DISH_PRICE_NOT_ALLOWED );
+        }
+
         this.price = price;
     }
 }

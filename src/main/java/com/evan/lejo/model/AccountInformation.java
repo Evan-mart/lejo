@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Entity
+@Table( name = "account_information" )
 public class AccountInformation {
 
     @Id
@@ -41,8 +42,10 @@ public class AccountInformation {
     }
 
 
-    public void setEmail( String email ) {
+    public AccountInformation setEmail( String email ) {
         this.email = email;
+
+        return this;
     }
 
 
@@ -51,7 +54,7 @@ public class AccountInformation {
     }
 
 
-    public void setMobile( String mobile ) {
+    public AccountInformation setMobile( String mobile ) {
         if ( mobile == null || mobile.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_MOBILE_REQUIRED );
         }
@@ -61,6 +64,8 @@ public class AccountInformation {
         }
 
         this.mobile = mobile;
+
+        return this;
     }
 
 
@@ -69,12 +74,14 @@ public class AccountInformation {
     }
 
 
-    public void setAddress( String address ) {
+    public AccountInformation setAddress( String address ) {
         if ( address == null || address.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_ADDRESS_REQUIRED );
         }
 
         this.address = address;
+
+        return this;
     }
 
 
@@ -83,12 +90,14 @@ public class AccountInformation {
     }
 
 
-    public void setCity( String city ) {
+    public AccountInformation setCity( String city ) {
         if ( city == null || city.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_CITY_REQUIRED );
         }
 
         this.city = city;
+
+        return this;
     }
 
 
@@ -97,12 +106,14 @@ public class AccountInformation {
     }
 
 
-    public void setPostCode( String postCode ) {
+    public AccountInformation setPostCode( String postCode ) {
         if ( postCode == null || postCode.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_INFORMATION_POSTCODE_REQUIRED );
         }
 
         this.postCode = postCode;
+
+        return this;
     }
 
 

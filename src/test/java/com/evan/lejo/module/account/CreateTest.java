@@ -34,7 +34,19 @@ public class CreateTest {
 
             getService().create( request, account );
 
-            Assertions.assertEquals( request.getParameter( AccountParameter.USERNAME ), account.getUserName() );
+            Assertions.assertNotNull( request.getParameter( AccountParameter.USERNAME ), account.getUsername() );
+            Assertions.assertNotNull( request.getParameter( AccountParameter.PASSWORD ), account.getPassword() );
+        }
+    }
+
+
+    @Test
+    public void test_fail() {
+        for ( Request request : dpFail() ) {
+            Assertions.assertThrows(
+                    RuntimeException.class,
+                    () -> getService().create( request, new Account() )
+            );
         }
     }
 
@@ -42,7 +54,20 @@ public class CreateTest {
     private List< Request > dpSuccess() {
         return List.of(
                 MockRequest.build( Map.of(
-                        AccountParameter.USERNAME, "lejo"
+                        AccountParameter.USERNAME, "jo",
+                        AccountParameter.PASSWORD, "kfnvso"
+                ) )
+        );
+    }
+
+
+    private List< Request > dpFail() {
+        return List.of(
+                MockRequest.build( Map.of(
+                        AccountParameter.USERNAME, " "
+                ) ),
+                MockRequest.build( Map.of(
+                        AccountParameter.PASSWORD, ""
                 ) )
         );
     }

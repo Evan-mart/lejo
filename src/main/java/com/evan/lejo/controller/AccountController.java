@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.Map;
 
+/**
+ * @author Evan Martinez <martinez.evan@orange.fr>
+ */
 @RestController
 @RequestMapping( "/accounts" )
 public class AccountController {
