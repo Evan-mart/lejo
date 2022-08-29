@@ -28,7 +28,7 @@ public class Create implements com.evan.lejo.api.crud.Create< Order > {
 
     @Override
     public void create( Request request, Order order ) {
-        Long accountId = Cast.getLong( request.getParameter( OrderParameter.ACCOUNT ) );
+        Long accountId = Cast.getLong( request.getParameter( OrderParameter.ACCOUNT_ID ) );
 
         order.setAccount( accountRepository.findOrFail( accountId ) );
 
