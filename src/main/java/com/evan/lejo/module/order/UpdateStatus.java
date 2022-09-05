@@ -2,7 +2,7 @@ package com.evan.lejo.module.order;
 
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.request.Request;
-import com.evan.lejo.model.Order;
+import com.evan.lejo.entity.Order;
 import com.evan.lejo.parameter.OrderParameter;
 import com.evan.lejo.repository.OrderRepository;
 import org.springframework.stereotype.Service;

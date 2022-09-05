@@ -1,4 +1,4 @@
-package com.evan.lejo.model;
+package com.evan.lejo.entity;
 
 import com.evan.lejo.configuration.response.Error;
 import com.evan.lejo.exception.HttpUnprocessableEntityException;

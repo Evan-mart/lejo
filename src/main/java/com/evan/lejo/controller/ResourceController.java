@@ -3,12 +3,13 @@ package com.evan.lejo.controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
+@RestController
 public class ResourceController {
-
     @GetMapping( "/login" )
     public String loginEndpoint() {
         return "Login!";

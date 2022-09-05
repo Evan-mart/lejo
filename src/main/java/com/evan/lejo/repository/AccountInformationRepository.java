@@ -1,6 +1,6 @@
 package com.evan.lejo.repository;
 
-import com.evan.lejo.model.AccountInformation;
+import com.evan.lejo.entity.AccountInformation;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>

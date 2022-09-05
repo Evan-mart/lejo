@@ -1,6 +1,6 @@
 package com.evan.lejo.repository;
 
-import com.evan.lejo.model.Account;
+import com.evan.lejo.entity.Account;
 import com.evan.lejo.repository.jpa.AccountJpa;
 import org.springframework.stereotype.Service;
 

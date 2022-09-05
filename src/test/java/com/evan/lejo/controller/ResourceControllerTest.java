@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class ResourceControllerTest {
 
     @Test
-    public void whenAnonymousAccessLogin_thenOK() {
+    public void whenAnonymousAccessLogin_thenOK() throws Exception {
 
     }
 }

@@ -2,7 +2,7 @@ package com.evan.lejo.module.dish;
 
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.request.Request;
-import com.evan.lejo.model.Dish;
+import com.evan.lejo.entity.Dish;
 import com.evan.lejo.parameter.DishParameter;
 import com.evan.lejo.repository.DishRepository;
 import org.springframework.stereotype.Service;

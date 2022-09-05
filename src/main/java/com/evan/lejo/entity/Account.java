@@ -1,4 +1,4 @@
-package com.evan.lejo.model;
+package com.evan.lejo.entity;
 
 import com.evan.lejo.configuration.response.Error;
 import com.evan.lejo.exception.HttpUnprocessableEntityException;
@@ -6,11 +6,8 @@ import com.evan.lejo.exception.HttpUnprocessableEntityException;
 import javax.persistence.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table( name = "account" )
 public class Account {
 
     @Id
@@ -25,19 +22,19 @@ public class Account {
     private final ZonedDateTime createdAt;
 
     @Column( name = "last_connection", nullable = false )
-    private ZonedDateTime lastConnection;
+    private final ZonedDateTime lastConnection;
 
-    @Column( name = "account_information_id", nullable = false )
+    @Column( name = "account_information_id" )
     private Long accountInformationId;
 
-    @OneToMany( cascade = CascadeType.PERSIST, mappedBy = "account" )
-    private final List< Order > orders;
+/*    @OneToMany( cascade = CascadeType.PERSIST, mappedBy = "account" )
+    private final List< Order > orders;*/
 
 
     public Account() {
         createdAt      = ZonedDateTime.now( ZoneId.of( "UTC" ) );
         lastConnection = ZonedDateTime.now( ZoneId.of( "UTC" ) );
-        orders         = new ArrayList<>();
+        //orders         = new ArrayList<>();
     }
 
 
@@ -51,7 +48,7 @@ public class Account {
     }
 
 
-    public Account setUserName( String username ) {
+    public Account setUsername( String username ) {
         if ( username == null || username.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_USERNAME_REQUIRED );
         }
@@ -98,7 +95,7 @@ public class Account {
     }
 
 
-    public List< Order > getOrders() {
+/*    public List< Order > getOrders() {
         return orders;
     }
 
@@ -111,7 +108,7 @@ public class Account {
         orders.add( order );
 
         return this;
-    }
+    }*/
 }
 
 

@@ -5,14 +5,11 @@ import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
-import com.evan.lejo.model.Dish;
+import com.evan.lejo.entity.Dish;
 import com.evan.lejo.repository.DishRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.Map;
@@ -20,14 +17,14 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-/*@RestController
-@RequestMapping( "/dish" )*/
+@RestController
+@RequestMapping( "/dishes" )
 public class DishController {
 
     protected final Create< Dish >     createDish;
-    protected final Update< Dish >     updateTitle;
-    protected final Update< Dish >     updateDescription;
-    protected final Update< Dish >     updatePrice;
+    protected final Update< Dish >     updateDishTitle;
+    protected final Update< Dish >     updateDishDescription;
+    protected final Update< Dish >     updateDishPrice;
     protected final DishRepository     dishRepository;
     protected final DataStorageHandler dataStorageHandler;
     protected final Request            request;
@@ -35,19 +32,19 @@ public class DishController {
 
     public DishController(
             Create< Dish > createDish,
-            Update< Dish > updateTitle,
-            Update< Dish > updateDescription,
-            Update< Dish > updatePrice,
+            Update< Dish > updateDishTitle,
+            Update< Dish > updateDishDescription,
+            Update< Dish > updateDishPrice,
             DishRepository dishRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
-        this.createDish         = createDish;
-        this.updateTitle        = updateTitle;
-        this.updateDescription  = updateDescription;
-        this.updatePrice        = updatePrice;
-        this.dishRepository     = dishRepository;
-        this.dataStorageHandler = dataStorageHandler;
-        this.request            = request;
+        this.createDish            = createDish;
+        this.updateDishTitle       = updateDishTitle;
+        this.updateDishDescription = updateDishDescription;
+        this.updateDishPrice       = updateDishPrice;
+        this.dishRepository        = dishRepository;
+        this.dataStorageHandler    = dataStorageHandler;
+        this.request               = request;
     }
 
 
@@ -79,7 +76,7 @@ public class DishController {
     public ResponseEntity< Map< String, Object > > updateTitle( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
-        updateTitle.update( request, dish );
+        updateDishTitle.update( request, dish );
 
         dataStorageHandler.save();
 
@@ -92,7 +89,7 @@ public class DishController {
     public ResponseEntity< Map< String, Object > > updateDescription( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
-        updateDescription.update( request, dish );
+        updateDishDescription.update( request, dish );
 
         dataStorageHandler.save();
 
@@ -105,7 +102,7 @@ public class DishController {
     public ResponseEntity< Map< String, Object > > updatePrice( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
-        updatePrice.update( request, dish );
+        updateDishPrice.update( request, dish );
 
         dataStorageHandler.save();
 

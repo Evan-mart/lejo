@@ -1,6 +1,6 @@
 package com.evan.lejo.repository;
 
-import com.evan.lejo.model.Dish;
+import com.evan.lejo.entity.Dish;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>

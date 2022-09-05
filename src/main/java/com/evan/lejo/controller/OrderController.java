@@ -5,23 +5,21 @@ import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
-import com.evan.lejo.model.Order;
+import com.evan.lejo.entity.Order;
 import com.evan.lejo.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-/*@RestController
-@RequestMapping( "/orders" )*/
+@RestController
+@RequestMapping( "/orders" )
 public class OrderController {
 
     protected final Create< Order >    createOrder;
@@ -45,11 +43,19 @@ public class OrderController {
     }
 
 
-    @GetMapping( "{id:[0-9]+}" )
-    public ResponseEntity< Map< String, Object > > getOrder( @PathVariable( "id" ) long id ) {
+    @GetMapping
+    public ResponseEntity< List< Order > > getAllOrders() {
+        List< Order > orders = orderRepository.findAll();
+
+        return ResponseEntity.ok( orders );
+    }
+
+
+    @GetMapping( "/{id:[0-9]+}" )
+    public ResponseEntity< Order > getOrder( @PathVariable( "id" ) long id ) {
         Order order = orderRepository.findOrFail( id );
 
-        return ResponseEntity.ok( Encoder.encode( order ) );
+        return ResponseEntity.ok( order );
     }
 
 

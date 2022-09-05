@@ -5,13 +5,14 @@ import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
-import com.evan.lejo.model.Account;
+import com.evan.lejo.entity.Account;
 import com.evan.lejo.repository.AccountRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,12 +46,19 @@ public class AccountController {
     }
 
 
+    @GetMapping
+    public ResponseEntity< List< Account > > findAllAccounts() {
+        List< Account > accounts = accountRepository.findAll();
+
+        return ResponseEntity.ok( accounts );
+    }
+
+
     @GetMapping( "/{id:[0-9]+}" )
-    public ResponseEntity< Map< String, Object > > getAccount( @PathVariable( "id" ) long id ) {
+    public ResponseEntity< Account > getAccount( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
-        return ResponseEntity
-                .ok( Encoder.encode( account ) );
+        return ResponseEntity.ok( account );
     }
 
 

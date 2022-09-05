@@ -1,7 +1,7 @@
 package com.evan.lejo.module.order;
 
 import com.evan.lejo.api.request.Request;
-import com.evan.lejo.model.Order;
+import com.evan.lejo.entity.Order;
 import com.evan.lejo.parameter.OrderParameter;
 import com.evan.lejo.repository.AccountRepository;
 import com.evan.lejo.repository.OrderRepository;

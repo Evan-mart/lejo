@@ -5,7 +5,7 @@ import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
-import com.evan.lejo.model.AccountInformation;
+import com.evan.lejo.entity.AccountInformation;
 import com.evan.lejo.repository.AccountInformationRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

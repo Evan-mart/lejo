@@ -1,7 +1,7 @@
 package com.evan.lejo.module.accountInformation;
 
 import com.evan.lejo.api.request.Request;
-import com.evan.lejo.model.AccountInformation;
+import com.evan.lejo.entity.AccountInformation;
 import com.evan.lejo.parameter.AccountInformationParameter;
 import com.evan.lejo.repository.AccountInformationRepository;
 import org.springframework.stereotype.Service;

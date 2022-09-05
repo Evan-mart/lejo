@@ -1,20 +1,23 @@
-package com.evan.lejo.configuration;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
+package com.evan.lejo.configuration.security;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+
+
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity( prePostEnabled = true, securedEnabled = true, jsr250Enabled = true )
+@EnableGlobalMethodSecurity( securedEnabled = true, prePostEnabled = true )
 public class SecurityConfig {
 
     @Value( "${spring.security.debug:false}" )
@@ -43,13 +46,5 @@ public class SecurityConfig {
             .sessionCreationPolicy( SessionCreationPolicy.STATELESS );
 
         return http.build();
-    }
-
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return ( web ) -> web.debug( securityDebug )
-                             .ignoring()
-                             .antMatchers( "/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico" );
     }
 }
