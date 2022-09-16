@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table( name = "`order`" )
+@Table( name = "order" )
 public class Order {
 
     public static final byte STATUS_INITIALIZED                    = 0;
@@ -78,6 +78,10 @@ public class Order {
 
     public Order setAccount( Account account ) {
         this.account = account;
+
+        if ( !account.getOrders().contains( this ) ) {
+            account.addOrder( this );
+        }
 
         return this;
     }

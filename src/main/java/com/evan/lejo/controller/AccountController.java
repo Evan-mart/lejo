@@ -45,7 +45,7 @@ public class AccountController {
         this.request               = request;
     }
 
-
+    
     @GetMapping
     public ResponseEntity< List< Account > > findAllAccounts() {
         List< Account > accounts = accountRepository.findAll();
@@ -79,7 +79,7 @@ public class AccountController {
 
     @Transactional
     @PatchMapping( "/{id:[0-9]+}/username" )
-    public ResponseEntity< Map< String, Object > > updateAccountUserName( @PathVariable( "id" ) long id ) {
+    public ResponseEntity< Void > updateUsername( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
         updateAccountUsername.update( request, account );
@@ -95,7 +95,7 @@ public class AccountController {
     public ResponseEntity< Map< String, Object > > updateAccountPassword( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
-        updateAccountUsername.update( request, account );
+        updateAccountPassword.update( request, account );
 
         dataStorageHandler.save();
 

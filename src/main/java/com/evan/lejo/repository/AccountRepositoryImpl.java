@@ -12,11 +12,15 @@ import javax.persistence.EntityManager;
 @Service
 public class AccountRepositoryImpl extends AbstractRepository< Account > implements AccountRepository {
 
+    protected final AccountJpa accountJpa;
+
+
     public AccountRepositoryImpl(
             EntityManager entityManager,
             AccountJpa accountJpa
     ) {
         super( entityManager, accountJpa );
+        this.accountJpa = accountJpa;
     }
 
 
