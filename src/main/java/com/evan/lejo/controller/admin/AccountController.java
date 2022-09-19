@@ -1,10 +1,11 @@
-package com.evan.lejo.controller;
+package com.evan.lejo.controller.admin;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
+import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.entity.Account;
 import com.evan.lejo.repository.AccountRepository;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class AccountController {
     protected final Update< Account >  updateAccountUsername;
     protected final Update< Account >  updateAccountPassword;
     protected final AccountRepository  accountRepository;
-    protected final DataStorageHandler dataStorageHandler;
     protected final Request            request;
+    protected final DataStorageHandler dataStorageHandler;
 
 
     public AccountController(
@@ -35,30 +36,30 @@ public class AccountController {
             Update< Account > updateAccountUsername,
             Update< Account > updateAccountPassword,
             AccountRepository accountRepository,
-            DataStorageHandler dataStorageHandler,
-            Request request ) {
+            Request request,
+            DataStorageHandler dataStorageHandler ) {
         this.createAccount         = createAccount;
         this.updateAccountUsername = updateAccountUsername;
         this.updateAccountPassword = updateAccountPassword;
         this.accountRepository     = accountRepository;
-        this.dataStorageHandler    = dataStorageHandler;
         this.request               = request;
+        this.dataStorageHandler    = dataStorageHandler;
     }
 
-    
+
     @GetMapping
-    public ResponseEntity< List< Account > > findAllAccounts() {
+    public ResponseEntity< List< Map< String, Object > > > findAllAccounts() {
         List< Account > accounts = accountRepository.findAll();
 
-        return ResponseEntity.ok( accounts );
+        return ResponseEntity.ok( Encoder.encode( accounts, GroupType.ADMIN ) );
     }
 
 
     @GetMapping( "/{id:[0-9]+}" )
-    public ResponseEntity< Account > getAccount( @PathVariable( "id" ) long id ) {
+    public ResponseEntity< Map< String, Object > > getAccount( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
-        return ResponseEntity.ok( account );
+        return ResponseEntity.ok( Encoder.encode( account, GroupType.ADMIN ) );
     }
 
 
@@ -73,7 +74,7 @@ public class AccountController {
 
         return ResponseEntity
                 .status( HttpStatus.CREATED )
-                .body( Encoder.encode( account ) );
+                .body( Encoder.encode( account, GroupType.ADMIN ) );
     }
 
 

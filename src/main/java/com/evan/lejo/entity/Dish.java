@@ -1,21 +1,37 @@
 package com.evan.lejo.entity;
 
+import com.evan.lejo.api.json.annotation.Group;
+import com.evan.lejo.api.json.annotation.Json;
+import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.configuration.response.Error;
 import com.evan.lejo.exception.HttpUnprocessableEntityException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table( name = "dish" )
 public class Dish {
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long   id;
+    private Long id;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     private String title;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     private String description;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     private Double price;
 
 

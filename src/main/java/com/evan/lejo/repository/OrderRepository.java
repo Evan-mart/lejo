@@ -1,13 +1,13 @@
 package com.evan.lejo.repository;
 
-import com.evan.lejo.entity.Order;
+import com.evan.lejo.entity.Orders;
 
 import java.util.List;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-public interface OrderRepository extends DefaultRepository< Order > {
+public interface OrderRepository extends DefaultRepository< Orders > {
 
-    List< Order > findByAccountId( long accountId );
+    List< Orders > findByAccountId( long accountId );
 }

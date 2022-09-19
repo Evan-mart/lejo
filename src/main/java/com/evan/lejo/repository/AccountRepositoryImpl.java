@@ -26,6 +26,6 @@ public class AccountRepositoryImpl extends AbstractRepository< Account > impleme
 
     @Override
     protected Class< Account > getClassType() {
-        return null;
+        return Account.class;
     }
 }

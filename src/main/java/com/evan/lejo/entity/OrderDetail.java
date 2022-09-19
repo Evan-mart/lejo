@@ -2,6 +2,7 @@ package com.evan.lejo.entity;
 
 import javax.persistence.*;
 
+@Entity
 public class OrderDetail {
 
     @Id
@@ -17,7 +18,7 @@ public class OrderDetail {
 
     @ManyToOne( cascade = CascadeType.PERSIST )
     @JoinColumn( name = "order_id", nullable = false )
-    private Order order;
+    private Orders order;
 
 
     public Long getId() {
@@ -50,12 +51,12 @@ public class OrderDetail {
     }
 
 
-    public Order getOrder() {
+    public Orders getOrder() {
         return order;
     }
 
 
-    public void setOrder( Order order ) {
+    public void setOrder( Orders order ) {
         this.order = order;
     }
 

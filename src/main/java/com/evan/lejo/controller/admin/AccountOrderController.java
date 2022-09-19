@@ -1,7 +1,7 @@
-package com.evan.lejo.controller;
+package com.evan.lejo.controller.admin;
 
 import com.evan.lejo.api.request.Request;
-import com.evan.lejo.entity.Order;
+import com.evan.lejo.entity.Orders;
 import com.evan.lejo.repository.AccountRepository;
 import com.evan.lejo.repository.OrderRepository;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +32,8 @@ public class AccountOrderController {
 
 
     @GetMapping( "/{id:[0-9]+}/orders" )
-    public ResponseEntity< List< Order > > getAccountOrders( @PathVariable( "id" ) long id ) {
-        List< Order > orders = orderRepository.findByAccountId( id );
+    public ResponseEntity< List< Orders > > getAccountOrders( @PathVariable( "id" ) long id ) {
+        List< Orders > orders = orderRepository.findByAccountId( id );
 
         return ResponseEntity.ok( orders );
     }

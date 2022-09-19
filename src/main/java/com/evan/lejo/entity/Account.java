@@ -1,5 +1,8 @@
 package com.evan.lejo.entity;
 
+import com.evan.lejo.api.json.annotation.Group;
+import com.evan.lejo.api.json.annotation.Json;
+import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.configuration.response.Error;
 import com.evan.lejo.exception.HttpUnprocessableEntityException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,41 +10,53 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table( name = "account" )
 public class Account {
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @Column( name = "username", nullable = false )
     private String username;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @JsonIgnore
     private String password;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @Column( name = "created_at", nullable = false )
     private final ZonedDateTime createdAt;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @Column( name = "last_connection", nullable = false )
     private final ZonedDateTime lastConnection;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @OneToOne( cascade = CascadeType.ALL )
-    @JoinColumn( name = "account_information_id", nullable = false )
+    @JoinColumn( name = "account_information_id", nullable = true )
     private AccountInformation accountInformation;
-
-    @OneToMany( mappedBy = "account" )
-    private final List< Order > orders;
 
 
     public Account() {
         createdAt      = ZonedDateTime.now( ZoneId.of( "UTC" ) );
         lastConnection = ZonedDateTime.now( ZoneId.of( "UTC" ) );
-        orders         = new ArrayList<>();
     }
 
 
@@ -97,26 +112,6 @@ public class Account {
 
     public void setAccountInformation( AccountInformation accountInformation ) {
         this.accountInformation = accountInformation;
-    }
-
-
-    public List< Order > getOrders() {
-        return orders;
-    }
-
-
-    public Account addOrder( Order order ) {
-        if ( this.orders.contains( order ) ) {
-            return this;
-        }
-
-        this.orders.add( order );
-
-        if ( order.getAccount() != this ) {
-            order.setAccount( this );
-        }
-
-        return this;
     }
 }
 

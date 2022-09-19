@@ -12,16 +12,19 @@ import javax.persistence.EntityManager;
 @Service
 public class DishRepositoryImpl extends AbstractRepository< Dish > implements DishRepository {
 
+    protected final DishJpa dishJpa;
+
+
     public DishRepositoryImpl(
             EntityManager entityManager,
-            DishJpa dishJpa
-    ) {
+            DishJpa dishJpa ) {
         super( entityManager, dishJpa );
+        this.dishJpa = dishJpa;
     }
 
 
     @Override
     protected Class< Dish > getClassType() {
-        return null;
+        return Dish.class;
     }
 }

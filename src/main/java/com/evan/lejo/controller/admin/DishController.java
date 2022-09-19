@@ -1,10 +1,11 @@
-package com.evan.lejo.controller;
+package com.evan.lejo.controller.admin;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
+import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.entity.Dish;
 import com.evan.lejo.repository.DishRepository;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,11 +50,19 @@ public class DishController {
     }
 
 
+    @GetMapping
+    public ResponseEntity< List< Map< String, Object > > > findAllDishes() {
+        List< Dish > dishes = dishRepository.findAll();
+
+        return ResponseEntity.ok( Encoder.encode( dishes, GroupType.ADMIN ) );
+    }
+
+
     @GetMapping( "/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getDish( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
-        return ResponseEntity.ok( Encoder.encode( dish ) );
+        return ResponseEntity.ok( Encoder.encode( dish, GroupType.ADMIN ) );
     }
 
 
