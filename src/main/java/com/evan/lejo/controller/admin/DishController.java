@@ -77,7 +77,7 @@ public class DishController {
 
         return ResponseEntity
                 .status( HttpStatus.CREATED )
-                .body( Encoder.encode( dish ) );
+                .body( Encoder.encode( dish, GroupType.ADMIN ) );
     }
 
 

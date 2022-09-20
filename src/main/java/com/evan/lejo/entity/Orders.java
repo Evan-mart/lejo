@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table( name = "orders" )
@@ -40,6 +42,17 @@ public class Orders {
     @Json( groups = {
             @Group( name = GroupType.ADMIN )
     } )
+    @ManyToMany( cascade = CascadeType.PERSIST )
+    @JoinTable(
+            name = "order_dish",
+            joinColumns = @JoinColumn( name = "order_id" ),
+            inverseJoinColumns = @JoinColumn( name = "dish_id" )
+    )
+    private final List< Dish > dishes;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @Column( name = "created_at" )
     private final ZonedDateTime createdAt;
 
@@ -51,6 +64,7 @@ public class Orders {
 
     public Orders() {
         createdAt = ZonedDateTime.now( ZoneId.of( "UTC" ) );
+        dishes    = new ArrayList<>();
     }
 
 
@@ -97,6 +111,27 @@ public class Orders {
 /*        if ( !account.getOrders().contains( this ) ) {
             account.addOrder( this );
         }*/
+
+        return this;
+    }
+
+
+    public List< Dish > getDishes() {
+        return dishes;
+    }
+
+
+    public Orders addDish( Dish dish ) {
+        if ( !this.dishes.contains( dish ) ) {
+            this.dishes.add( dish );
+        }
+
+        return this;
+    }
+
+
+    public Orders removeDish( Dish dish ) {
+        this.dishes.remove( dish );
 
         return this;
     }

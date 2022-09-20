@@ -4,6 +4,7 @@ import com.evan.lejo.api.request.Request;
 import com.evan.lejo.entity.Dish;
 import com.evan.lejo.parameter.DishParameter;
 import com.evan.lejo.repository.DishRepository;
+import com.evan.lejo.util.Cast;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +25,7 @@ public class Create implements com.evan.lejo.api.crud.Create< Dish > {
     public void create( Request request, Dish dish ) {
         String title       = ( String ) request.getParameter( DishParameter.TITLE );
         String description = ( String ) request.getParameter( DishParameter.DESCRIPTION );
-        Double price       = ( Double ) request.getParameter( DishParameter.PRICE );
+        Double price       = Cast.getDouble( request.getParameter( DishParameter.PRICE ) );
 
         dish
                 .setTitle( title )

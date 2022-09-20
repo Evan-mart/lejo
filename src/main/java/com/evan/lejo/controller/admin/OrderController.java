@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
@@ -45,31 +43,12 @@ public class OrderController {
     }
 
 
-    @GetMapping
-    public ResponseEntity< List< Map< String, Object > > > getAllOrders() {
-        List< Orders > orders = orderRepository.findAll();
-
-        return ResponseEntity.ok( Encoder.encode( orders, GroupType.ADMIN ) );
-    }
-
-
-/*    @GetMapping( "/{id:[0-9]+}" )
-    public ResponseEntity< Map< String, Object > > getOrder( @PathVariable( "id" ) long id ) {
+    @Transactional
+    @GetMapping( "/{id:[0-9]+}" )
+    public ResponseEntity< Map< String, Object > > getOrderById( @PathVariable( "id" ) long id ) {
         Orders order = orderRepository.findOrFail( id );
 
         return ResponseEntity.ok( Encoder.encode( order, GroupType.ADMIN ) );
-    }*/
-
-
-    @GetMapping( "/{id:[0-9]+}" )
-    public ResponseEntity< Orders > getTutorialById( @PathVariable( "id" ) long id ) {
-        Optional< Orders > order = orderRepository.findById( id );
-
-        if ( order.isPresent() ) {
-            return new ResponseEntity<>( order.get(), HttpStatus.OK );
-        } else {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND );
-        }
     }
 
 

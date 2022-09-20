@@ -7,7 +7,9 @@ import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.entity.Account;
+import com.evan.lejo.entity.Orders;
 import com.evan.lejo.repository.AccountRepository;
+import com.evan.lejo.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ public class AccountController {
     protected final Update< Account >  updateAccountUsername;
     protected final Update< Account >  updateAccountPassword;
     protected final AccountRepository  accountRepository;
+    protected final OrderRepository    orderRepository;
     protected final Request            request;
     protected final DataStorageHandler dataStorageHandler;
 
@@ -36,22 +39,16 @@ public class AccountController {
             Update< Account > updateAccountUsername,
             Update< Account > updateAccountPassword,
             AccountRepository accountRepository,
+            OrderRepository orderRepository,
             Request request,
             DataStorageHandler dataStorageHandler ) {
         this.createAccount         = createAccount;
         this.updateAccountUsername = updateAccountUsername;
         this.updateAccountPassword = updateAccountPassword;
         this.accountRepository     = accountRepository;
+        this.orderRepository       = orderRepository;
         this.request               = request;
         this.dataStorageHandler    = dataStorageHandler;
-    }
-
-
-    @GetMapping
-    public ResponseEntity< List< Map< String, Object > > > findAllAccounts() {
-        List< Account > accounts = accountRepository.findAll();
-
-        return ResponseEntity.ok( Encoder.encode( accounts, GroupType.ADMIN ) );
     }
 
 
@@ -60,6 +57,15 @@ public class AccountController {
         Account account = accountRepository.findOrFail( id );
 
         return ResponseEntity.ok( Encoder.encode( account, GroupType.ADMIN ) );
+    }
+
+
+    @Transactional
+    @GetMapping( "/{id:[0-9]+}/orders" )
+    public ResponseEntity< List< Map< String, Object > > > getAllOrdersByAccount( @PathVariable( "id" ) long id ) {
+        List< Orders > orders = orderRepository.findByAccountId( id );
+
+        return ResponseEntity.ok( Encoder.encode( orders, GroupType.ADMIN ) );
     }
 
 
