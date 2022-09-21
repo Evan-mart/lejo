@@ -28,4 +28,10 @@ public class AccountRepositoryImpl extends AbstractRepository< Account > impleme
     protected Class< Account > getClassType() {
         return Account.class;
     }
+
+
+    @Override
+    public Account findByEmail( String email ) {
+        return accountJpa.findByEmail( email );
+    }
 }

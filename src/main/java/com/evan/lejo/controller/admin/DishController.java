@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,14 +49,7 @@ public class DishController {
     }
 
 
-    @GetMapping
-    public ResponseEntity< List< Map< String, Object > > > findAllDishes() {
-        List< Dish > dishes = dishRepository.findAll();
-
-        return ResponseEntity.ok( Encoder.encode( dishes, GroupType.ADMIN ) );
-    }
-
-
+    @Transactional
     @GetMapping( "/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getDish( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );

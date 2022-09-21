@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table( name = "orders" )
-public class Orders {
+public class Order {
 
     public static final byte STATUS_INITIALIZED                    = 0;
     public static final byte STATUS_IN_PROGRESS                    = 1;
@@ -62,7 +62,7 @@ public class Orders {
     private Account account;
 
 
-    public Orders() {
+    public Order() {
         createdAt = ZonedDateTime.now( ZoneId.of( "UTC" ) );
         dishes    = new ArrayList<>();
     }
@@ -78,7 +78,7 @@ public class Orders {
     }
 
 
-    public Orders setStatus( Byte status ) {
+    public Order setStatus( Byte status ) {
         if ( status == null ) {
             throw new HttpUnprocessableEntityException( Error.ORDER_STATUS_REQUIRED );
         }
@@ -105,7 +105,7 @@ public class Orders {
     }
 
 
-    public Orders setAccount( Account account ) {
+    public Order setAccount( Account account ) {
         this.account = account;
 
 /*        if ( !account.getOrders().contains( this ) ) {
@@ -121,7 +121,7 @@ public class Orders {
     }
 
 
-    public Orders addDish( Dish dish ) {
+    public Order addDish( Dish dish ) {
         if ( !this.dishes.contains( dish ) ) {
             this.dishes.add( dish );
         }
@@ -130,7 +130,7 @@ public class Orders {
     }
 
 
-    public Orders removeDish( Dish dish ) {
+    public Order removeDish( Dish dish ) {
         this.dishes.remove( dish );
 
         return this;

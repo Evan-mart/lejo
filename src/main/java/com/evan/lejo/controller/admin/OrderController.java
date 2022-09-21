@@ -6,7 +6,8 @@ import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
-import com.evan.lejo.entity.Orders;
+import com.evan.lejo.entity.Order;
+import com.evan.lejo.repository.DishRepository;
 import com.evan.lejo.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,22 +23,25 @@ import java.util.Map;
 @RequestMapping( "/orders" )
 public class OrderController {
 
-    protected final Create< Orders >   createOrder;
-    protected final Update< Orders >   updateStatus;
+    protected final Create< Order >    createOrder;
+    protected final Update< Order >    updateStatus;
     protected final OrderRepository    orderRepository;
+    protected final DishRepository     dishRepository;
     protected final Request            request;
     protected final DataStorageHandler dataStorageHandler;
 
 
     public OrderController(
-            Create< Orders > createOrder,
-            Update< Orders > updateStatus,
+            Create< Order > createOrder,
+            Update< Order > updateStatus,
             OrderRepository orderRepository,
+            DishRepository dishRepository,
             Request request,
             DataStorageHandler dataStorageHandler ) {
         this.createOrder        = createOrder;
         this.updateStatus       = updateStatus;
         this.orderRepository    = orderRepository;
+        this.dishRepository     = dishRepository;
         this.request            = request;
         this.dataStorageHandler = dataStorageHandler;
     }
@@ -46,7 +50,7 @@ public class OrderController {
     @Transactional
     @GetMapping( "/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getOrderById( @PathVariable( "id" ) long id ) {
-        Orders order = orderRepository.findOrFail( id );
+        Order order = orderRepository.findOrFail( id );
 
         return ResponseEntity.ok( Encoder.encode( order, GroupType.ADMIN ) );
     }
@@ -55,7 +59,7 @@ public class OrderController {
     @Transactional
     @PostMapping
     public ResponseEntity< Map< String, Object > > create() {
-        Orders order = new Orders();
+        Order order = new Order();
 
         createOrder.create( request, order );
 
@@ -70,7 +74,7 @@ public class OrderController {
     @Transactional
     @PatchMapping( "/{id:[0-9]+}/status" )
     public ResponseEntity< Void > updateStatus( @PathVariable( "id" ) long id ) {
-        Orders order = orderRepository.findOrFail( id );
+        Order order = orderRepository.findOrFail( id );
 
         updateStatus.update( request, order );
 

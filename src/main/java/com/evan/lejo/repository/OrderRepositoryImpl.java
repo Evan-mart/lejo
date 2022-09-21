@@ -1,6 +1,6 @@
 package com.evan.lejo.repository;
 
-import com.evan.lejo.entity.Orders;
+import com.evan.lejo.entity.Order;
 import com.evan.lejo.repository.jpa.OrderJpa;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @Service
-public class OrderRepositoryImpl extends AbstractRepository< Orders > implements OrderRepository {
+public class OrderRepositoryImpl extends AbstractRepository< Order > implements OrderRepository {
 
     protected final OrderJpa orderJpa;
 
@@ -25,13 +25,13 @@ public class OrderRepositoryImpl extends AbstractRepository< Orders > implements
 
 
     @Override
-    protected Class< Orders > getClassType() {
-        return Orders.class;
+    protected Class< Order > getClassType() {
+        return Order.class;
     }
 
 
     @Override
-    public List< Orders > findByAccountId( long accountId ) {
+    public List< Order > findByAccountId( long accountId ) {
         return orderJpa.findByAccountId( accountId );
     }
 }

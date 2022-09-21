@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table( name = "account" )
@@ -31,7 +33,14 @@ public class Account {
     @Json( groups = {
             @Group( name = GroupType.ADMIN )
     } )
+    @Column( nullable = false )
+    private String email;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
     @JsonIgnore
+    @Column( nullable = false )
     private String password;
 
     @Json( groups = {
@@ -53,10 +62,17 @@ public class Account {
     @JoinColumn( name = "account_information_id", nullable = true )
     private AccountInformation accountInformation;
 
+    @ManyToMany( fetch = FetchType.LAZY )
+    @JoinTable( name = "account_roles",
+                joinColumns = @JoinColumn( name = "account_id" ),
+                inverseJoinColumns = @JoinColumn( name = "role_id" ) )
+    private List< Role > roles;
+
 
     public Account() {
         createdAt      = ZonedDateTime.now( ZoneId.of( "UTC" ) );
         lastConnection = ZonedDateTime.now( ZoneId.of( "UTC" ) );
+        roles          = new ArrayList<>();
     }
 
 
@@ -76,6 +92,18 @@ public class Account {
         }
 
         this.username = username;
+
+        return this;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+
+    public Account setEmail( String email ) {
+        this.email = email;
 
         return this;
     }
@@ -112,6 +140,16 @@ public class Account {
 
     public void setAccountInformation( AccountInformation accountInformation ) {
         this.accountInformation = accountInformation;
+    }
+
+
+    public List< Role > getRoles() {
+        return roles;
+    }
+
+
+    public void setRoles( List< Role > roles ) {
+        this.roles = roles;
     }
 }
 

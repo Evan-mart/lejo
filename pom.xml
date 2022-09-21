@@ -51,9 +51,14 @@
             <version>2.7.3</version>
         </dependency>
         <dependency>
-            <groupId>com.10duke.client.jwt</groupId>
+            <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>1.1.0</version>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
         </dependency>
 
     </dependencies>

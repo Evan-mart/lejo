@@ -7,7 +7,7 @@ import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.entity.Account;
-import com.evan.lejo.entity.Orders;
+import com.evan.lejo.entity.Order;
 import com.evan.lejo.repository.AccountRepository;
 import com.evan.lejo.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
@@ -63,14 +63,14 @@ public class AccountController {
     @Transactional
     @GetMapping( "/{id:[0-9]+}/orders" )
     public ResponseEntity< List< Map< String, Object > > > getAllOrdersByAccount( @PathVariable( "id" ) long id ) {
-        List< Orders > orders = orderRepository.findByAccountId( id );
+        List< Order > orders = orderRepository.findByAccountId( id );
 
         return ResponseEntity.ok( Encoder.encode( orders, GroupType.ADMIN ) );
     }
 
 
     @Transactional
-    @PostMapping
+    @PostMapping( "/register" )
     public ResponseEntity< Map< String, Object > > create() {
         Account account = new Account();
 

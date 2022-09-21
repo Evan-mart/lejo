@@ -1,13 +1,30 @@
 package com.evan.lejo.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.evan.lejo.api.json.annotation.Group;
+import com.evan.lejo.api.json.annotation.Json;
+import com.evan.lejo.configuration.json.GroupType;
 
+import javax.persistence.*;
+
+@Entity
+@Table( name = "role" )
 public class Role {
 
-    private Long            id;
-    private String          roleName;
-    private List< Account > accounts = new ArrayList<>();
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private long id;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
+    private String name;
+
+
+    public Role() {
+    }
 
 
     public Long getId() {
@@ -15,33 +32,14 @@ public class Role {
     }
 
 
-    public void setId( Long id ) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
 
-    public String getRoleName() {
-        return roleName;
-    }
+    public Role setName( String name ) {
+        this.name = name;
 
-
-    public void setRoleName( String roleName ) {
-        this.roleName = roleName;
-    }
-
-
-    public List< Account > getAccounts() {
-        return accounts;
-    }
-
-
-    public void setAccounts( List< Account > accounts ) {
-        this.accounts = accounts;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Comptes : " + accounts + " role : " + roleName;
+        return this;
     }
 }

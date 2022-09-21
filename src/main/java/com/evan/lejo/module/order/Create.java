@@ -1,7 +1,7 @@
 package com.evan.lejo.module.order;
 
 import com.evan.lejo.api.request.Request;
-import com.evan.lejo.entity.Orders;
+import com.evan.lejo.entity.Order;
 import com.evan.lejo.parameter.OrderParameter;
 import com.evan.lejo.repository.AccountRepository;
 import com.evan.lejo.repository.OrderRepository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @Service( "createOrder" )
-public class Create implements com.evan.lejo.api.crud.Create< Orders > {
+public class Create implements com.evan.lejo.api.crud.Create< Order > {
 
     protected final OrderRepository   orderRepository;
     protected final AccountRepository accountRepository;
@@ -27,7 +27,7 @@ public class Create implements com.evan.lejo.api.crud.Create< Orders > {
 
 
     @Override
-    public void create( Request request, Orders order ) {
+    public void create( Request request, Order order ) {
         Long accountId = Cast.getLong( request.getParameter( OrderParameter.ACCOUNT_ID ) );
         Byte status    = Cast.getByte( request.getParameter( "status" ) );
 

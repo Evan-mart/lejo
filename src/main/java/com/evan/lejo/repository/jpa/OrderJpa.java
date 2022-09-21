@@ -1,13 +1,13 @@
 package com.evan.lejo.repository.jpa;
 
-import com.evan.lejo.entity.Orders;
+import com.evan.lejo.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface OrderJpa extends JpaRepository< Orders, Long > {
+public interface OrderJpa extends JpaRepository< Order, Long > {
 
-    List< Orders > findByAccountId( long accountId );
+    List< Order > findByAccountId( long accountId );
 }
