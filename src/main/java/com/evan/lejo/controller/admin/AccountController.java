@@ -24,8 +24,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController
-@RequestMapping( "/lejo/accounts" )
+@RestController( "AdminAccountsController" )
+@RequestMapping( "/lejo/admin" )
 public class AccountController {
 
     protected final Create< Account >     createAccount;
@@ -68,7 +68,7 @@ public class AccountController {
     }
 
 
-    @GetMapping( "/{id:[0-9]+}" )
+    @GetMapping( "/accounts/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getAccount( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
@@ -77,7 +77,7 @@ public class AccountController {
 
 
     @Transactional
-    @GetMapping( "/{id:[0-9]+}/orders" )
+    @GetMapping( "/accounts/{id:[0-9]+}/orders" )
     public ResponseEntity< List< Map< String, Object > > > getAllOrdersByAccount( @PathVariable( "id" ) long id ) {
         List< Order > orders = orderRepository.findByAccountId( id );
 
@@ -85,55 +85,8 @@ public class AccountController {
     }
 
 
-/*    @Transactional
-    @PostMapping( "/signin" )
-    public ResponseEntity< Map< String, Object > > authenticateUser( @Valid @RequestBody LoginRequest loginRequest ) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken( loginRequest.getUsername(), loginRequest.getPassword() )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication( authentication );
-
-        String jwt = jwtUtils.generateJwtToken( authentication );
-
-        UserDetailsImpl userDetails = ( UserDetailsImpl ) authentication.getPrincipal();
-
-        List< String > roles = userDetails.getAuthorities()
-                                          .stream()
-                                          .map( item -> item.getAuthority() )
-                                          .collect( Collectors.toList() );
-
-        JwtResponse jwtResponse = new JwtResponse(
-                jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles
-        );
-
-        return ResponseEntity
-                .status( HttpStatus.OK )
-                .body( Encoder.encode( jwtResponse ) );
-    }
-
-
     @Transactional
-    @PostMapping( "/register" )
-    public ResponseEntity< Map< String, Object > > create() {
-        Account account = new Account();
-
-        createAccount.create( request, account );
-
-        dataStorageHandler.save();
-
-        return ResponseEntity
-                .status( HttpStatus.CREATED )
-                .body( Encoder.encode( account, GroupType.ADMIN ) );
-    }*/
-
-
-    @Transactional
-    @PatchMapping( "/{id:[0-9]+}/username" )
+    @PatchMapping( "/accounts/{id:[0-9]+}/username" )
     public ResponseEntity< Void > updateUsername( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 
@@ -146,7 +99,7 @@ public class AccountController {
 
 
     @Transactional
-    @PatchMapping( "/{id:[0-9]+}/password" )
+    @PatchMapping( "/accounts/{id:[0-9]+}/password" )
     public ResponseEntity< Map< String, Object > > updateAccountPassword( @PathVariable( "id" ) long id ) {
         Account account = accountRepository.findOrFail( id );
 

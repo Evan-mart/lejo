@@ -73,10 +73,8 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS ).and()
             .authorizeRequests()
             .antMatchers( "/lejo/auth/**" ).permitAll()
-            .antMatchers( "/lejo/account-informations/**" ).permitAll()
-            .antMatchers( "/lejo/dishes/**" ).permitAll()
-            .antMatchers( "/lejo/orders/**" ).permitAll()
-            .antMatchers( "/lejo/accounts**" ).permitAll()
+            .antMatchers( "/lejo/user/**" ).hasRole( AuthRole.ROLE_USER.replace( "ROLE_", "" ) )
+            .antMatchers( "/lejo/admin/**" ).hasRole( AuthRole.ROLE_ADMIN.replace( "ROLE_", "" ) )
             .anyRequest().authenticated();
 
 

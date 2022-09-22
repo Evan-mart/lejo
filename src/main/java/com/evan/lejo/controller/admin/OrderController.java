@@ -19,8 +19,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController
-@RequestMapping( "/lejo/orders" )
+@RestController( "AdminOrdersController" )
+@RequestMapping( "/lejo/admin" )
 public class OrderController {
 
     protected final Create< Order >    createOrder;
@@ -48,7 +48,7 @@ public class OrderController {
 
 
     @Transactional
-    @GetMapping( "/{id:[0-9]+}" )
+    @GetMapping( "/orders/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getOrderById( @PathVariable( "id" ) long id ) {
         Order order = orderRepository.findOrFail( id );
 
@@ -72,7 +72,7 @@ public class OrderController {
 
 
     @Transactional
-    @PatchMapping( "/{id:[0-9]+}/status" )
+    @PatchMapping( "/orders/{id:[0-9]+}/status" )
     public ResponseEntity< Void > updateStatus( @PathVariable( "id" ) long id ) {
         Order order = orderRepository.findOrFail( id );
 

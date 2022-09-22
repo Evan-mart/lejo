@@ -18,8 +18,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController
-@RequestMapping( "/lejo/dishes" )
+@RestController( "AdminDishesController" )
+@RequestMapping( "/lejo/admin" )
 public class DishController {
 
     protected final Create< Dish >     createDish;
@@ -50,7 +50,7 @@ public class DishController {
 
 
     @Transactional
-    @GetMapping( "/{id:[0-9]+}" )
+    @GetMapping( "/dishes/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getDish( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
@@ -74,7 +74,7 @@ public class DishController {
 
 
     @Transactional
-    @PatchMapping( "/{id:[0-9]+}/title" )
+    @PatchMapping( "/dishes/{id:[0-9]+}/title" )
     public ResponseEntity< Map< String, Object > > updateTitle( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
@@ -87,7 +87,7 @@ public class DishController {
 
 
     @Transactional
-    @PatchMapping( "/{id:[0-9]+}/description" )
+    @PatchMapping( "/dishes/{id:[0-9]+}/description" )
     public ResponseEntity< Map< String, Object > > updateDescription( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
@@ -100,7 +100,7 @@ public class DishController {
 
 
     @Transactional
-    @PatchMapping( "/{id:[0-9]+}/price" )
+    @PatchMapping( "/dishes/{id:[0-9]+}/price" )
     public ResponseEntity< Map< String, Object > > updatePrice( @PathVariable( "id" ) long id ) {
         Dish dish = dishRepository.findOrFail( id );
 
