@@ -93,11 +93,6 @@ public class AuthController {
                 userDetails.getEmail(),
                 roles
         );
-        System.out.println( jwt );
-        System.out.println( userDetails.getId() );
-        System.out.println( userDetails.getUsername() );
-        System.out.println( userDetails.getEmail() );
-        System.out.println( roles );
 
         return ResponseEntity
                 .ok( jwtResponse );
