@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController
-@RequestMapping( "/account-informations" )
+@RequestMapping( "/lejo/account-informations" )
 public class AccountInformationController {
 
     protected final Create< AccountInformation > createAccountInformation;

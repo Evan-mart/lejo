@@ -6,12 +6,15 @@ import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
+import com.evan.lejo.configuration.security.jwt.JwtUtils;
 import com.evan.lejo.entity.Account;
 import com.evan.lejo.entity.Order;
 import com.evan.lejo.repository.AccountRepository;
 import com.evan.lejo.repository.OrderRepository;
-import org.springframework.http.HttpStatus;
+import com.evan.lejo.repository.RoleRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -22,16 +25,20 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController
-@RequestMapping( "/accounts" )
+@RequestMapping( "/lejo/accounts" )
 public class AccountController {
 
-    protected final Create< Account >  createAccount;
-    protected final Update< Account >  updateAccountUsername;
-    protected final Update< Account >  updateAccountPassword;
-    protected final AccountRepository  accountRepository;
-    protected final OrderRepository    orderRepository;
-    protected final Request            request;
-    protected final DataStorageHandler dataStorageHandler;
+    protected final Create< Account >     createAccount;
+    protected final Update< Account >     updateAccountUsername;
+    protected final Update< Account >     updateAccountPassword;
+    protected final AccountRepository     accountRepository;
+    protected final OrderRepository       orderRepository;
+    protected final Request               request;
+    protected final DataStorageHandler    dataStorageHandler;
+    protected final AuthenticationManager authenticationManager;
+    protected final RoleRepository        roleRepository;
+    protected final PasswordEncoder       passwordEncoder;
+    protected final JwtUtils              jwtUtils;
 
 
     public AccountController(
@@ -41,7 +48,12 @@ public class AccountController {
             AccountRepository accountRepository,
             OrderRepository orderRepository,
             Request request,
-            DataStorageHandler dataStorageHandler ) {
+            DataStorageHandler dataStorageHandler,
+            AuthenticationManager authenticationManager,
+            RoleRepository roleRepository,
+            PasswordEncoder passwordEncoder,
+            JwtUtils jwtUtils
+    ) {
         this.createAccount         = createAccount;
         this.updateAccountUsername = updateAccountUsername;
         this.updateAccountPassword = updateAccountPassword;
@@ -49,6 +61,10 @@ public class AccountController {
         this.orderRepository       = orderRepository;
         this.request               = request;
         this.dataStorageHandler    = dataStorageHandler;
+        this.authenticationManager = authenticationManager;
+        this.roleRepository        = roleRepository;
+        this.passwordEncoder       = passwordEncoder;
+        this.jwtUtils              = jwtUtils;
     }
 
 
@@ -69,6 +85,38 @@ public class AccountController {
     }
 
 
+/*    @Transactional
+    @PostMapping( "/signin" )
+    public ResponseEntity< Map< String, Object > > authenticateUser( @Valid @RequestBody LoginRequest loginRequest ) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken( loginRequest.getUsername(), loginRequest.getPassword() )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication( authentication );
+
+        String jwt = jwtUtils.generateJwtToken( authentication );
+
+        UserDetailsImpl userDetails = ( UserDetailsImpl ) authentication.getPrincipal();
+
+        List< String > roles = userDetails.getAuthorities()
+                                          .stream()
+                                          .map( item -> item.getAuthority() )
+                                          .collect( Collectors.toList() );
+
+        JwtResponse jwtResponse = new JwtResponse(
+                jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles
+        );
+
+        return ResponseEntity
+                .status( HttpStatus.OK )
+                .body( Encoder.encode( jwtResponse ) );
+    }
+
+
     @Transactional
     @PostMapping( "/register" )
     public ResponseEntity< Map< String, Object > > create() {
@@ -81,7 +129,7 @@ public class AccountController {
         return ResponseEntity
                 .status( HttpStatus.CREATED )
                 .body( Encoder.encode( account, GroupType.ADMIN ) );
-    }
+    }*/
 
 
     @Transactional

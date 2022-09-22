@@ -1,6 +1,7 @@
 package com.evan.lejo.configuration.security.service;
 
 import com.evan.lejo.api.storage.data.DataStorageHandler;
+import com.evan.lejo.configuration.security.AuthRole;
 import com.evan.lejo.configuration.security.user.UserDto;
 import com.evan.lejo.entity.Account;
 import com.evan.lejo.entity.Role;
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .setEmail( userDto.getEmail() )
                 .setPassword( passwordEncoder.encode( userDto.getPassword() ) );
 
-        Role role = roleRepository.findByName( "ROLE_ADMIN" );
+        Role role = roleRepository.findByName( AuthRole.ROLE_USER );
 
         if ( role == null ) {
             role = checkRoleExist();
@@ -88,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
     private Role checkRoleExist() {
         Role role = new Role();
-        role.setName( "ROLE_ADMIN" );
+        role.setName( AuthRole.ROLE_USER );
         return roleJpa.save( role );
     }
 }

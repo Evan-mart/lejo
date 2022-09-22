@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController
-@RequestMapping( "/dishes" )
+@RequestMapping( "/lejo/dishes" )
 public class DishController {
 
     protected final Create< Dish >     createDish;

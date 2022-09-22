@@ -34,4 +34,16 @@ public class AccountRepositoryImpl extends AbstractRepository< Account > impleme
     public Account findByEmail( String email ) {
         return accountJpa.findByEmail( email );
     }
+
+
+    @Override
+    public Account findByUsername( String username ) {
+        return accountJpa.findByUsername( username );
+    }
+
+
+    @Override
+    public Boolean existsByEmail( String email ) {
+        return accountJpa.existsByEmail( email );
+    }
 }

@@ -7,4 +7,10 @@ import com.evan.lejo.entity.Account;
  */
 public interface AccountRepository extends DefaultRepository< Account > {
     Account findByEmail( String email );
+
+
+    Account findByUsername( String username );
+
+
+    Boolean existsByEmail( String email );
 }

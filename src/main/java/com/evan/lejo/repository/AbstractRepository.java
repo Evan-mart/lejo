@@ -4,6 +4,7 @@ import com.evan.lejo.api.storage.data.StampManagedEntity;
 import com.evan.lejo.exception.HttpNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -13,13 +14,14 @@ import java.util.Optional;
 /**
  * @author Romain Lavabre <romainlavabre98@gmail.com>
  */
+@Component
 abstract public class AbstractRepository< T > {
 
     protected       Class< T >               classType;
     protected       JpaRepository< T, Long > jpaRepository;
-    protected final EntityManager      entityManager;
+    protected final EntityManager            entityManager;
     @Autowired
-    private         StampManagedEntity stampManagedEntity;
+    private         StampManagedEntity       stampManagedEntity;
 
 
     public AbstractRepository( final EntityManager entityManager, final JpaRepository< T, Long > jpaRepository ) {

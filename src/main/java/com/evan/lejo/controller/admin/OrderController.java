@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController
-@RequestMapping( "/orders" )
+@RequestMapping( "/lejo/orders" )
 public class OrderController {
 
     protected final Create< Order >    createOrder;

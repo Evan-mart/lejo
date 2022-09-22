@@ -1,6 +1,7 @@
 package com.evan.lejo.module.account;
 
 import com.evan.lejo.api.request.Request;
+import com.evan.lejo.configuration.security.AuthRole;
 import com.evan.lejo.entity.Account;
 import com.evan.lejo.entity.Role;
 import com.evan.lejo.repository.AccountRepository;
@@ -44,7 +45,7 @@ public class Create implements com.evan.lejo.api.crud.Create< Account > {
                 .setEmail( email )
                 .setPassword( encoder.encode( password ) );
 
-        Role role = roleRepository.findByName( "ROLE_ADMIN" );
+        Role role = roleRepository.findByName( AuthRole.ROLE_USER );
 
         account.setRoles( Arrays.asList( role ) );
 
