@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.admin;
+package com.evan.lejo.controller.user;
 
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
@@ -23,8 +23,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController( "AdminAccountsController" )
-@RequestMapping( "/lejo/admin" )
+@RestController( "UserAccountsController" )
+@RequestMapping( "/lejo/user" )
 public class AccountController {
 
     protected final Update< Account >     updateAccountUsername;
@@ -106,40 +106,3 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

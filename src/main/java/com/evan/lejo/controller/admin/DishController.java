@@ -59,7 +59,7 @@ public class DishController {
 
 
     @Transactional
-    @PostMapping
+    @PostMapping( "/dishes" )
     public ResponseEntity< Map< String, Object > > create() {
         Dish dish = new Dish();
 

@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.admin;
+package com.evan.lejo.controller.user;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
@@ -19,8 +19,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController( "AdminOrdersController" )
-@RequestMapping( "/lejo/admin" )
+@RestController( "UserOrdersController" )
+@RequestMapping( "/lejo/user" )
 public class OrderController {
 
     protected final Create< Order >    createOrder;
