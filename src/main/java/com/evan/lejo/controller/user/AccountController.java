@@ -64,14 +64,6 @@ public class AccountController {
     }
 
 
-    @GetMapping( "/accounts/{id:[0-9]+}" )
-    public ResponseEntity< Map< String, Object > > getAccount( @PathVariable( "id" ) long id ) {
-        Account account = accountRepository.findOrFail( id );
-
-        return ResponseEntity.ok( Encoder.encode( account, GroupType.ADMIN ) );
-    }
-
-
     @Transactional
     @GetMapping( "/accounts/{id:[0-9]+}/orders" )
     public ResponseEntity< List< Map< String, Object > > > getAllOrdersByAccount( @PathVariable( "id" ) long id ) {

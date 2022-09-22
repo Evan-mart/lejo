@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,9 +24,7 @@ public class DishController {
     protected final DishRepository dishRepository;
 
 
-    public DishController(
-            DishRepository dishRepository
-    ) {
+    public DishController( DishRepository dishRepository ) {
         this.dishRepository = dishRepository;
     }
 
@@ -36,5 +35,14 @@ public class DishController {
         Dish dish = dishRepository.findOrFail( id );
 
         return ResponseEntity.ok( Encoder.encode( dish, GroupType.ADMIN ) );
+    }
+
+
+    @Transactional
+    @GetMapping( "/dishes" )
+    public ResponseEntity< List< Map< String, Object > > > getAllDishes() {
+        List< Dish > dishes = dishRepository.findAll();
+
+        return ResponseEntity.ok( Encoder.encode( dishes, GroupType.ADMIN ) );
     }
 }
