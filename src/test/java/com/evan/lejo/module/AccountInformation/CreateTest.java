@@ -34,7 +34,6 @@ public class CreateTest {
 
             getService().create( request, accountInformation );
 
-            Assertions.assertNotNull( request.getParameter( AccountInformationParameter.EMAIL ), accountInformation.getEmail() );
             Assertions.assertNotNull( request.getParameter( AccountInformationParameter.MOBILE ), accountInformation.getMobile() );
             Assertions.assertNotNull( request.getParameter( AccountInformationParameter.ADDRESS ), accountInformation.getAddress() );
             Assertions.assertNotNull( request.getParameter( AccountInformationParameter.CITY ), accountInformation.getCity() );

@@ -22,7 +22,6 @@ import java.util.Map;
 public class AccountInformationController {
 
     protected final Create< AccountInformation > createAccountInformation;
-    protected final Update< AccountInformation > updateAccountInformationEmail;
     protected final Update< AccountInformation > updateAccountInformationMobile;
     protected final Update< AccountInformation > updateAccountInformationAddress;
     protected final Update< AccountInformation > updateAccountInformationCity;
@@ -34,7 +33,6 @@ public class AccountInformationController {
 
     public AccountInformationController(
             Create< AccountInformation > createAccountInformation,
-            Update< AccountInformation > updateAccountInformationEmail,
             Update< AccountInformation > updateAccountInformationMobile,
             Update< AccountInformation > updateAccountInformationAddress,
             Update< AccountInformation > updateAccountInformationCity,
@@ -43,7 +41,6 @@ public class AccountInformationController {
             DataStorageHandler dataStorageHandler,
             Request request ) {
         this.createAccountInformation         = createAccountInformation;
-        this.updateAccountInformationEmail    = updateAccountInformationEmail;
         this.updateAccountInformationMobile   = updateAccountInformationMobile;
         this.updateAccountInformationAddress  = updateAccountInformationAddress;
         this.updateAccountInformationCity     = updateAccountInformationCity;
@@ -74,19 +71,6 @@ public class AccountInformationController {
         return ResponseEntity
                 .status( HttpStatus.CREATED )
                 .body( Encoder.encode( accountInformation ) );
-    }
-
-
-    @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/email" )
-    public ResponseEntity< Map< String, Object > > updateAccountInformationEmail( @PathVariable( "id" ) long id ) {
-        AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
-
-        updateAccountInformationEmail.update( request, accountInformation );
-
-        dataStorageHandler.save();
-
-        return ResponseEntity.noContent().build();
     }
 
 

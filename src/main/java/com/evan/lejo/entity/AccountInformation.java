@@ -15,7 +15,6 @@ public class AccountInformation {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
-    private String email;
     private String mobile;
     private String address;
     private String city;
@@ -34,18 +33,6 @@ public class AccountInformation {
 
     public Long getId() {
         return id;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-
-    public AccountInformation setEmail( String email ) {
-        this.email = email;
-
-        return this;
     }
 
 

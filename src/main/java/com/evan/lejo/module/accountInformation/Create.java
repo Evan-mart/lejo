@@ -22,14 +22,12 @@ public class Create implements com.evan.lejo.api.crud.Create< AccountInformation
 
     @Override
     public void create( Request request, AccountInformation accountInformation ) {
-        String email    = ( String ) request.getParameter( AccountInformationParameter.EMAIL );
         String mobile   = ( String ) request.getParameter( AccountInformationParameter.MOBILE );
         String address  = ( String ) request.getParameter( AccountInformationParameter.ADDRESS );
         String city     = ( String ) request.getParameter( AccountInformationParameter.CITY );
         String postCode = ( String ) request.getParameter( AccountInformationParameter.POSTCODE );
 
         accountInformation
-                .setEmail( email )
                 .setMobile( mobile )
                 .setAddress( address )
                 .setCity( city )

@@ -38,7 +38,8 @@ public class DishController {
             Update< Dish > updateDishPrice,
             DishRepository dishRepository,
             DataStorageHandler dataStorageHandler,
-            Request request ) {
+            Request request
+    ) {
         this.createDish            = createDish;
         this.updateDishTitle       = updateDishTitle;
         this.updateDishDescription = updateDishDescription;

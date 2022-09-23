@@ -34,6 +34,13 @@ public class Dish {
     } )
     private Double price;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN )
+    } )
+    @OneToOne( cascade = CascadeType.ALL )
+    @JoinColumn( name = "category_id", nullable = false )
+    private Category category;
+
 
     public Long getId() {
         return id;
@@ -83,6 +90,18 @@ public class Dish {
         }
 
         this.price = price;
+
+        return this;
+    }
+
+
+    public Category getCategory() {
+        return category;
+    }
+
+
+    public Dish setCategory( Category category ) {
+        this.category = category;
 
         return this;
     }
