@@ -1,5 +1,8 @@
 package com.evan.lejo.entity;
 
+import com.evan.lejo.api.json.annotation.Group;
+import com.evan.lejo.api.json.annotation.Json;
+import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.configuration.response.Error;
 import com.evan.lejo.exception.HttpUnprocessableEntityException;
 
@@ -11,16 +14,40 @@ import java.time.ZonedDateTime;
 @Table( name = "account_information" )
 public class AccountInformation {
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+    } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+    } )
     private String mobile;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+    } )
     private String address;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+    } )
     private String city;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+    } )
     @Column( name = "post_code" )
     private String postCode;
+
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+    } )
+    @OneToOne( cascade = CascadeType.PERSIST )
+    @JoinColumn( name = "account_id" )
+    private Account account;
 
     @Column( name = "created_at" )
     private final ZonedDateTime createdAt;
@@ -99,6 +126,18 @@ public class AccountInformation {
         }
 
         this.postCode = postCode;
+
+        return this;
+    }
+
+
+    public Account getAccount() {
+        return account;
+    }
+
+
+    public AccountInformation setAccount( Account account ) {
+        this.account = account;
 
         return this;
     }

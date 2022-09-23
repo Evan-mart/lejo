@@ -55,13 +55,6 @@ public class Account {
     @Column( name = "last_connection", nullable = false )
     private final ZonedDateTime lastConnection;
 
-    @Json( groups = {
-            @Group( name = GroupType.ADMIN )
-    } )
-    @OneToOne( cascade = CascadeType.ALL )
-    @JoinColumn( name = "account_information_id", nullable = true )
-    private AccountInformation accountInformation;
-
     @ManyToMany( fetch = FetchType.LAZY )
     @JoinTable( name = "account_roles",
                 joinColumns = @JoinColumn( name = "account_id" ),
@@ -130,16 +123,6 @@ public class Account {
 
     public ZonedDateTime getLastConnection() {
         return lastConnection;
-    }
-
-
-    public AccountInformation getAccountInformation() {
-        return accountInformation;
-    }
-
-
-    public void setAccountInformation( AccountInformation accountInformation ) {
-        this.accountInformation = accountInformation;
     }
 
 

@@ -15,7 +15,9 @@ public class Create implements com.evan.lejo.api.crud.Create< AccountInformation
     protected final AccountInformationRepository accountInformationRepository;
 
 
-    public Create( AccountInformationRepository accountInformationRepository ) {
+    public Create(
+            AccountInformationRepository accountInformationRepository
+    ) {
         this.accountInformationRepository = accountInformationRepository;
     }
 

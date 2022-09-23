@@ -5,8 +5,11 @@ import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
+import com.evan.lejo.configuration.json.GroupType;
+import com.evan.lejo.entity.Account;
 import com.evan.lejo.entity.AccountInformation;
 import com.evan.lejo.repository.AccountInformationRepository;
+import com.evan.lejo.repository.AccountRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,7 @@ public class AccountInformationController {
     protected final Update< AccountInformation > updateAccountInformationCity;
     protected final Update< AccountInformation > updateAccountInformationPostCode;
     protected final AccountInformationRepository accountInformationRepository;
+    protected final AccountRepository            accountRepository;
     protected final DataStorageHandler           dataStorageHandler;
     protected final Request                      request;
 
@@ -38,6 +42,7 @@ public class AccountInformationController {
             Update< AccountInformation > updateAccountInformationCity,
             Update< AccountInformation > updateAccountInformationPostCode,
             AccountInformationRepository accountInformationRepository,
+            AccountRepository accountRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
         this.createAccountInformation         = createAccountInformation;
@@ -46,6 +51,7 @@ public class AccountInformationController {
         this.updateAccountInformationCity     = updateAccountInformationCity;
         this.updateAccountInformationPostCode = updateAccountInformationPostCode;
         this.accountInformationRepository     = accountInformationRepository;
+        this.accountRepository                = accountRepository;
         this.dataStorageHandler               = dataStorageHandler;
         this.request                          = request;
     }
@@ -60,9 +66,14 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PostMapping( "/account-informations" )
-    public ResponseEntity< Map< String, Object > > create() {
+    @PostMapping( "/accounts/{id:[0-9]+}/account-informations" )
+    public ResponseEntity< Map< String, Object > > create( @PathVariable( "id" ) long id ) {
+
+        Account account = accountRepository.findOrFail( id );
+
         AccountInformation accountInformation = new AccountInformation();
+
+        accountInformation.setAccount( account );
 
         createAccountInformation.create( request, accountInformation );
 
@@ -70,7 +81,7 @@ public class AccountInformationController {
 
         return ResponseEntity
                 .status( HttpStatus.CREATED )
-                .body( Encoder.encode( accountInformation ) );
+                .body( Encoder.encode( accountInformation, GroupType.ADMIN ) );
     }
 
 
