@@ -11,14 +11,16 @@ import javax.persistence.*;
 public class Role {
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private String name;
 

@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.user;
+package com.evan.lejo.encoder.user;
 
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.configuration.json.GroupType;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController( "UserDishesController" )
-@RequestMapping( "/lejo/user" )
+@RequestMapping( "/lejo/users" )
 public class DishController {
 
     protected final DishRepository dishRepository;

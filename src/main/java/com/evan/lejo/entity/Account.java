@@ -18,39 +18,45 @@ import java.util.List;
 public class Account {
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Column( name = "username", nullable = false )
     private String username;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Column( nullable = false )
     private String email;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @JsonIgnore
     @Column( nullable = false )
     private String password;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Column( name = "created_at", nullable = false )
     private final ZonedDateTime createdAt;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Column( name = "last_connection", nullable = false )
     private final ZonedDateTime lastConnection;
@@ -96,6 +102,10 @@ public class Account {
 
 
     public Account setEmail( String email ) {
+        if ( email == null || email.isBlank() ) {
+            throw new HttpUnprocessableEntityException( Error.ACCOUNT_EMAIL_REQUIRED );
+        }
+
         this.email = email;
 
         return this;
@@ -107,12 +117,14 @@ public class Account {
     }
 
 
-    public void setPassword( String password ) {
+    public Account setPassword( String password ) {
         if ( password == null || password.isBlank() ) {
             throw new HttpUnprocessableEntityException( Error.ACCOUNT_PASSWORD_REQUIRED );
         }
 
         this.password = password;
+
+        return this;
     }
 
 

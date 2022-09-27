@@ -16,6 +16,7 @@ public class AccountInformation {
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -23,32 +24,41 @@ public class AccountInformation {
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private String mobile;
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private String address;
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private String city;
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Column( name = "post_code" )
     private String postCode;
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @OneToOne( cascade = CascadeType.PERSIST )
     @JoinColumn( name = "account_id" )
     private Account account;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
+    } )
     @Column( name = "created_at" )
     private final ZonedDateTime createdAt;
 

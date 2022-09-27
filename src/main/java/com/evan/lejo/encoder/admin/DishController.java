@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.admin;
+package com.evan.lejo.encoder.admin;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
@@ -6,7 +6,9 @@ import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
+import com.evan.lejo.entity.Category;
 import com.evan.lejo.entity.Dish;
+import com.evan.lejo.repository.CategoryRepository;
 import com.evan.lejo.repository.DishRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ public class DishController {
     protected final Update< Dish >     updateDishDescription;
     protected final Update< Dish >     updateDishPrice;
     protected final DishRepository     dishRepository;
+    protected final CategoryRepository categoryRepository;
     protected final DataStorageHandler dataStorageHandler;
     protected final Request            request;
 
@@ -37,6 +40,7 @@ public class DishController {
             Update< Dish > updateDishDescription,
             Update< Dish > updateDishPrice,
             DishRepository dishRepository,
+            CategoryRepository categoryRepository,
             DataStorageHandler dataStorageHandler,
             Request request
     ) {
@@ -45,6 +49,7 @@ public class DishController {
         this.updateDishDescription = updateDishDescription;
         this.updateDishPrice       = updateDishPrice;
         this.dishRepository        = dishRepository;
+        this.categoryRepository    = categoryRepository;
         this.dataStorageHandler    = dataStorageHandler;
         this.request               = request;
     }
@@ -60,9 +65,13 @@ public class DishController {
 
 
     @Transactional
-    @PostMapping( "/dishes" )
-    public ResponseEntity< Map< String, Object > > create() {
+    @PostMapping( "/categories/{id:[0-9]+}/dish" )
+    public ResponseEntity< Map< String, Object > > create( @PathVariable( "id" ) long id ) {
+        Category category = categoryRepository.findOrFail( id );
+
         Dish dish = new Dish();
+
+        dish.setCategory( category );
 
         createDish.create( request, dish );
 

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AccountInformationJpa extends JpaRepository< AccountInformation, Long > {
+    AccountInformation findByAccountId( long accountId );
 }

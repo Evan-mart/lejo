@@ -13,29 +13,34 @@ import javax.persistence.*;
 public class Dish {
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private String title;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private String description;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private Double price;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @OneToOne( cascade = CascadeType.ALL )
     @JoinColumn( name = "category_id", nullable = false )

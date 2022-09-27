@@ -23,9 +23,9 @@ public class UpdateUsername implements Update< Account > {
 
     @Override
     public void update( Request request, Account account ) {
-        String userName = ( String ) request.getParameter( AccountParameter.USERNAME );
+        String username = ( String ) request.getParameter( AccountParameter.USERNAME );
 
-        account.setUsername( userName );
+        account.setUsername( username );
 
         accountRepository.persist( account );
     }

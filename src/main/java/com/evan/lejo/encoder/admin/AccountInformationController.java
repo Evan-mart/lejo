@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.admin;
+package com.evan.lejo.encoder.admin;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
@@ -57,16 +57,16 @@ public class AccountInformationController {
     }
 
 
-    @GetMapping( "/account-informations/{id:[0-9]+}" )
+    @GetMapping( "/account_informations/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getAccountInformation( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
-        return ResponseEntity.ok( Encoder.encode( accountInformation ) );
+        return ResponseEntity.ok( Encoder.encode( accountInformation, GroupType.ADMIN ) );
     }
 
 
     @Transactional
-    @PostMapping( "/accounts/{id:[0-9]+}/account-informations" )
+    @PostMapping( "/accounts/{id:[0-9]+}/account_informations" )
     public ResponseEntity< Map< String, Object > > create( @PathVariable( "id" ) long id ) {
 
         Account account = accountRepository.findOrFail( id );
@@ -86,7 +86,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/mobile" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/mobile" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationMobile( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
@@ -99,7 +99,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/address" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/address" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationAddress( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
@@ -112,7 +112,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/city" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/city" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationCity( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
@@ -125,7 +125,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/post-code" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/post_code" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationPostCode( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 

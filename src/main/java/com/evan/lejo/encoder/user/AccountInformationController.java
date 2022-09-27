@@ -1,12 +1,15 @@
-package com.evan.lejo.controller.user;
+package com.evan.lejo.encoder.user;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
+import com.evan.lejo.configuration.json.GroupType;
+import com.evan.lejo.entity.Account;
 import com.evan.lejo.entity.AccountInformation;
 import com.evan.lejo.repository.AccountInformationRepository;
+import com.evan.lejo.repository.AccountRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController( "UserAccountsInformationsController" )
-@RequestMapping( "/lejo/user" )
+@RequestMapping( "/lejo/users" )
 public class AccountInformationController {
 
     protected final Create< AccountInformation > createAccountInformation;
@@ -26,6 +29,7 @@ public class AccountInformationController {
     protected final Update< AccountInformation > updateAccountInformationAddress;
     protected final Update< AccountInformation > updateAccountInformationCity;
     protected final Update< AccountInformation > updateAccountInformationPostCode;
+    protected final AccountRepository            accountRepository;
     protected final AccountInformationRepository accountInformationRepository;
     protected final DataStorageHandler           dataStorageHandler;
     protected final Request                      request;
@@ -37,7 +41,7 @@ public class AccountInformationController {
             Update< AccountInformation > updateAccountInformationAddress,
             Update< AccountInformation > updateAccountInformationCity,
             Update< AccountInformation > updateAccountInformationPostCode,
-            AccountInformationRepository accountInformationRepository,
+            AccountRepository accountRepository, AccountInformationRepository accountInformationRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
         this.createAccountInformation         = createAccountInformation;
@@ -45,24 +49,32 @@ public class AccountInformationController {
         this.updateAccountInformationAddress  = updateAccountInformationAddress;
         this.updateAccountInformationCity     = updateAccountInformationCity;
         this.updateAccountInformationPostCode = updateAccountInformationPostCode;
+        this.accountRepository                = accountRepository;
         this.accountInformationRepository     = accountInformationRepository;
         this.dataStorageHandler               = dataStorageHandler;
         this.request                          = request;
     }
 
 
-    @GetMapping( "/account-informations/{id:[0-9]+}" )
+    @GetMapping( "/accounts/{id:[0-9]+}/account_informations" )
     public ResponseEntity< Map< String, Object > > getAccountInformation( @PathVariable( "id" ) long id ) {
-        AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
+        Account account = accountRepository.findOrFail( id );
 
-        return ResponseEntity.ok( Encoder.encode( accountInformation ) );
+        AccountInformation accountInformation = accountInformationRepository.findByAccountId( account.getId() );
+
+        return ResponseEntity.ok( Encoder.encode( accountInformation, GroupType.USER ) );
     }
 
 
     @Transactional
-    @PostMapping( "/account-informations" )
-    public ResponseEntity< Map< String, Object > > create() {
+    @PostMapping( "/accounts/{id:[0-9]+}/account_informations" )
+    public ResponseEntity< Map< String, Object > > create( @PathVariable( "id" ) long id ) {
+
+        Account account = accountRepository.findOrFail( id );
+
         AccountInformation accountInformation = new AccountInformation();
+
+        accountInformation.setAccount( account );
 
         createAccountInformation.create( request, accountInformation );
 
@@ -70,12 +82,12 @@ public class AccountInformationController {
 
         return ResponseEntity
                 .status( HttpStatus.CREATED )
-                .body( Encoder.encode( accountInformation ) );
+                .body( Encoder.encode( accountInformation, GroupType.ADMIN ) );
     }
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/mobile" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/mobile" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationMobile( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
@@ -88,7 +100,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/address" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/address" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationAddress( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
@@ -101,7 +113,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/city" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/city" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationCity( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 
@@ -114,7 +126,7 @@ public class AccountInformationController {
 
 
     @Transactional
-    @PatchMapping( "/account-informations/{id:[0-9]+}/post-code" )
+    @PatchMapping( "/account_informations/{id:[0-9]+}/post_code" )
     public ResponseEntity< Map< String, Object > > updateAccountInformationPostCode( @PathVariable( "id" ) long id ) {
         AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
 

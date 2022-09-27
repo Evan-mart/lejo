@@ -5,6 +5,7 @@ import com.evan.lejo.api.request.Request;
 import com.evan.lejo.entity.Account;
 import com.evan.lejo.parameter.AccountParameter;
 import com.evan.lejo.repository.AccountRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,10 +14,15 @@ import org.springframework.stereotype.Service;
 @Service( "updateAccountPassword" )
 public class UpdatePassword implements Update< Account > {
     protected final AccountRepository accountRepository;
+    protected final PasswordEncoder   passwordEncoder;
 
 
-    public UpdatePassword( AccountRepository accountRepository ) {
+    public UpdatePassword(
+            AccountRepository accountRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder   = passwordEncoder;
     }
 
 
@@ -24,7 +30,7 @@ public class UpdatePassword implements Update< Account > {
     public void update( Request request, Account account ) {
         String password = ( String ) request.getParameter( AccountParameter.PASSWORD );
 
-        account.setPassword( password );
+        account.setPassword( passwordEncoder.encode( password ) );
 
         accountRepository.persist( account );
     }

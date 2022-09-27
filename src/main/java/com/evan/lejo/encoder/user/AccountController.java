@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.user;
+package com.evan.lejo.encoder.user;
 
 import com.evan.lejo.api.crud.Update;
 import com.evan.lejo.api.json.Encoder;
@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController( "UserAccountsController" )
-@RequestMapping( "/lejo/user" )
+@RequestMapping( "/lejo/users" )
 public class AccountController {
 
     protected final Update< Account >     updateAccountUsername;
@@ -65,11 +65,20 @@ public class AccountController {
 
 
     @Transactional
+    @GetMapping( "/accounts/{id:[0-9]+}" )
+    public ResponseEntity< Map< String, Object > > getAccount( @PathVariable( "id" ) long id ) {
+        Account account = accountRepository.findOrFail( id );
+
+        return ResponseEntity.ok( Encoder.encode( account, GroupType.USER ) );
+    }
+
+
+    @Transactional
     @GetMapping( "/accounts/{id:[0-9]+}/orders" )
     public ResponseEntity< List< Map< String, Object > > > getAllOrdersByAccount( @PathVariable( "id" ) long id ) {
         List< Order > orders = orderRepository.findByAccountId( id );
 
-        return ResponseEntity.ok( Encoder.encode( orders, GroupType.ADMIN ) );
+        return ResponseEntity.ok( Encoder.encode( orders, GroupType.USER ) );
     }
 
 

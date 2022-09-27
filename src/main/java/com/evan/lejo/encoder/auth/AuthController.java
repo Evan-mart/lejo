@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.auth;
+package com.evan.lejo.encoder.auth;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.json.Encoder;

@@ -1,4 +1,4 @@
-package com.evan.lejo.controller.admin;
+package com.evan.lejo.encoder.admin;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;

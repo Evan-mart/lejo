@@ -28,19 +28,22 @@ public class Order {
 
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private byte status;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @ManyToMany( cascade = CascadeType.PERSIST )
     @JoinTable(
@@ -51,7 +54,8 @@ public class Order {
     private final List< Dish > dishes;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     @Column( name = "created_at" )
     private final ZonedDateTime createdAt;
@@ -83,7 +87,7 @@ public class Order {
             throw new HttpUnprocessableEntityException( Error.ORDER_STATUS_REQUIRED );
         }
 
-/*        if ( status != STATUS_INITIALIZED
+        if ( status != STATUS_INITIALIZED
                 && status != STATUS_IN_PROGRESS
                 && status != STATUS_DELIVERY_INFORMATION_COMPLETED
                 && status != STATUS_PAYED
@@ -92,7 +96,7 @@ public class Order {
                 && status != STATUS_DELIVERED
                 && status != STATUS_ABORTED ) {
             throw new HttpUnprocessableEntityException( Error.ORDER_STATUS_INVALID );
-        }*/
+        }
 
         this.status = status;
 
@@ -107,10 +111,6 @@ public class Order {
 
     public Order setAccount( Account account ) {
         this.account = account;
-
-/*        if ( !account.getOrders().contains( this ) ) {
-            account.addOrder( this );
-        }*/
 
         return this;
     }
