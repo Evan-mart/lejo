@@ -1,9 +1,9 @@
-package com.evan.lejo.encoder;
+package com.evan.lejo.controller;
 
 import com.evan.lejo.api.container.Container;
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.configuration.json.GroupType;
-import com.evan.lejo.entity.Order;
+import com.evan.lejo.entity.Account;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-public class OrderTest {
+public class AccountTest {
 
     @BeforeEach
     public void setup() {
@@ -24,13 +24,15 @@ public class OrderTest {
 
     @Test
     public void admin() {
-        Map< String, Object > encoded = Encoder.encode( new Order(), GroupType.ADMIN );
+        Map< String, Object > encoded = Encoder.encode( new Account(), GroupType.ADMIN );
 
-        Assertions.assertEquals( 4, encoded.size() );
+        Assertions.assertEquals( 6, encoded.size() );
 
         Assertions.assertTrue( encoded.containsKey( "id" ) );
-        Assertions.assertTrue( encoded.containsKey( "status" ) );
+        Assertions.assertTrue( encoded.containsKey( "username" ) );
+        Assertions.assertTrue( encoded.containsKey( "email" ) );
+        Assertions.assertTrue( encoded.containsKey( "password" ) );
         Assertions.assertTrue( encoded.containsKey( "created_at" ) );
-        Assertions.assertTrue( encoded.containsKey( "dishes_id" ) );
+        Assertions.assertTrue( encoded.containsKey( "last_connection" ) );
     }
 }

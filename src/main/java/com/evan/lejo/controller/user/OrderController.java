@@ -1,4 +1,4 @@
-package com.evan.lejo.encoder.user;
+package com.evan.lejo.controller.user;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
@@ -48,6 +48,17 @@ public class OrderController {
         this.dishRepository     = dishRepository;
         this.request            = request;
         this.dataStorageHandler = dataStorageHandler;
+    }
+
+
+    @Transactional
+    @GetMapping( "/orders/{id:[0-9]+}" )
+    public ResponseEntity< Map< String, Object > > getOrderById( @PathVariable( "id" ) long id ) {
+        Order order = orderRepository.findOrFail( id );
+
+        //ResourceSecurity.assertAccessAllowed( order );
+
+        return ResponseEntity.ok( Encoder.encode( order, GroupType.USER ) );
     }
 
 

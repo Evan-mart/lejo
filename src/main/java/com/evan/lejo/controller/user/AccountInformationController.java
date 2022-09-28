@@ -1,4 +1,4 @@
-package com.evan.lejo.encoder.admin;
+package com.evan.lejo.controller.user;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Update;
@@ -20,8 +20,8 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController( "AdminAccountsInformationsController" )
-@RequestMapping( "/lejo/admin" )
+@RestController( "UserAccountsInformationsController" )
+@RequestMapping( "/lejo/users" )
 public class AccountInformationController {
 
     protected final Create< AccountInformation > createAccountInformation;
@@ -29,8 +29,8 @@ public class AccountInformationController {
     protected final Update< AccountInformation > updateAccountInformationAddress;
     protected final Update< AccountInformation > updateAccountInformationCity;
     protected final Update< AccountInformation > updateAccountInformationPostCode;
-    protected final AccountInformationRepository accountInformationRepository;
     protected final AccountRepository            accountRepository;
+    protected final AccountInformationRepository accountInformationRepository;
     protected final DataStorageHandler           dataStorageHandler;
     protected final Request                      request;
 
@@ -41,8 +41,7 @@ public class AccountInformationController {
             Update< AccountInformation > updateAccountInformationAddress,
             Update< AccountInformation > updateAccountInformationCity,
             Update< AccountInformation > updateAccountInformationPostCode,
-            AccountInformationRepository accountInformationRepository,
-            AccountRepository accountRepository,
+            AccountRepository accountRepository, AccountInformationRepository accountInformationRepository,
             DataStorageHandler dataStorageHandler,
             Request request ) {
         this.createAccountInformation         = createAccountInformation;
@@ -50,18 +49,20 @@ public class AccountInformationController {
         this.updateAccountInformationAddress  = updateAccountInformationAddress;
         this.updateAccountInformationCity     = updateAccountInformationCity;
         this.updateAccountInformationPostCode = updateAccountInformationPostCode;
-        this.accountInformationRepository     = accountInformationRepository;
         this.accountRepository                = accountRepository;
+        this.accountInformationRepository     = accountInformationRepository;
         this.dataStorageHandler               = dataStorageHandler;
         this.request                          = request;
     }
 
 
-    @GetMapping( "/account_informations/{id:[0-9]+}" )
+    @GetMapping( "/accounts/{id:[0-9]+}/account_informations" )
     public ResponseEntity< Map< String, Object > > getAccountInformation( @PathVariable( "id" ) long id ) {
-        AccountInformation accountInformation = accountInformationRepository.findOrFail( id );
+        Account account = accountRepository.findOrFail( id );
 
-        return ResponseEntity.ok( Encoder.encode( accountInformation, GroupType.ADMIN ) );
+        AccountInformation accountInformation = accountInformationRepository.findByAccountId( account.getId() );
+
+        return ResponseEntity.ok( Encoder.encode( accountInformation, GroupType.USER ) );
     }
 
 

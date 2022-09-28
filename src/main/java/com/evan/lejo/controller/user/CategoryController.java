@@ -1,4 +1,4 @@
-package com.evan.lejo.encoder.admin;
+package com.evan.lejo.controller.user;
 
 import com.evan.lejo.api.crud.Create;
 import com.evan.lejo.api.crud.Delete;
@@ -9,18 +9,21 @@ import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
 import com.evan.lejo.entity.Category;
 import com.evan.lejo.repository.CategoryRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@RestController( "AdminCategoriesController" )
-@RequestMapping( "/lejo/admin" )
+@RestController( "UserCategoriesController" )
+@RequestMapping( "/lejo/users" )
 public class CategoryController {
 
     protected final Create< Category > createCategory;
@@ -58,42 +61,10 @@ public class CategoryController {
 
 
     @Transactional
-    @PostMapping( "/categories" )
-    public ResponseEntity< Map< String, Object > > create() {
-        Category category = new Category();
+    @GetMapping( "/categories" )
+    public ResponseEntity< List< Map< String, Object > > > getAllCategories() {
+        List< Category > categories = categoryRepository.findAll();
 
-        createCategory.create( request, category );
-
-        dataStorageHandler.save();
-
-        return ResponseEntity
-                .status( HttpStatus.CREATED )
-                .body( Encoder.encode( category, GroupType.ADMIN ) );
-    }
-
-
-    @Transactional
-    @PatchMapping( "/categories/{id:[0-9]+}/name" )
-    public ResponseEntity< Map< String, Object > > updateName( @PathVariable( "id" ) long id ) {
-        Category category = categoryRepository.findOrFail( id );
-
-        updateCategoryName.update( request, category );
-
-        dataStorageHandler.save();
-
-        return ResponseEntity.noContent().build();
-    }
-
-
-    @Transactional
-    @DeleteMapping( "/categories/{id:[0-9]+}" )
-    public ResponseEntity< Void > removeCategory( @PathVariable( "id" ) long id ) {
-        Category category = categoryRepository.findOrFail( id );
-
-        deleteCategory.delete( request, category );
-
-        dataStorageHandler.save();
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok( Encoder.encode( categories, GroupType.USER ) );
     }
 }

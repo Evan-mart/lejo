@@ -67,6 +67,13 @@ public class Account {
                 inverseJoinColumns = @JoinColumn( name = "role_id" ) )
     private List< Role > roles;
 
+    @Json( groups = {
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
+    } )
+    @OneToMany( mappedBy = "account" )
+    private List< Order > orders;
+
 
     public Account() {
         createdAt      = ZonedDateTime.now( ZoneId.of( "UTC" ) );
@@ -145,6 +152,18 @@ public class Account {
 
     public void setRoles( List< Role > roles ) {
         this.roles = roles;
+    }
+
+
+    public List< Order > getOrders() {
+        return orders;
+    }
+
+
+    public Account setOrders( List< Order > orders ) {
+        this.orders = orders;
+
+        return this;
     }
 }
 

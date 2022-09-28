@@ -1,4 +1,4 @@
-package com.evan.lejo.encoder.user;
+package com.evan.lejo.controller.user;
 
 import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.configuration.json.GroupType;
