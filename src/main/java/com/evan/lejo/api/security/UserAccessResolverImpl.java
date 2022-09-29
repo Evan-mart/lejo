@@ -34,7 +34,7 @@ public class UserAccessResolverImpl implements com.evan.lejo.api.security.UserAc
 
         Jws< Claims > claims = signAndGetClaims( token );
 
-
+        
         User user = new User();
 
         if ( claims.getBody().get( "username" ) != null ) {
@@ -63,9 +63,8 @@ public class UserAccessResolverImpl implements com.evan.lejo.api.security.UserAc
             PublicKey pubKey = fact.generatePublic( keySpec );
 
 
-            return Jwts.parserBuilder()
+            return Jwts.parser()
                        .setSigningKey( pubKey )
-                       .build()
                        .parseClaimsJws( token );
         } catch ( Throwable th ) {
             throw new JwtException( th.getMessage() );

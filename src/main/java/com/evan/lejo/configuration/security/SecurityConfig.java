@@ -7,7 +7,7 @@ import com.evan.lejo.configuration.security.jwt.JwtUtils;
 import com.evan.lejo.configuration.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,7 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -75,17 +74,20 @@ public class SecurityConfig {
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
             .and()
+            .anonymous()
+            .and()
             .authorizeRequests()
+            .antMatchers( HttpMethod.OPTIONS, "/**" ).permitAll()
             .antMatchers( "/lejo/auth/**" ).permitAll()
-            .antMatchers( "/lejo/user/**" ).hasRole( AuthRole.ROLE_USER.replace( "ROLE_", "" ) )
+            .antMatchers( "/lejo/users/**" ).hasRole( AuthRole.ROLE_USER.replace( "ROLE_", "" ) )
             .antMatchers( "/lejo/admin/**" ).hasRole( AuthRole.ROLE_ADMIN.replace( "ROLE_", "" ) )
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
-            .authenticationEntryPoint( new HttpStatusEntryPoint( HttpStatus.UNAUTHORIZED ) );
+            .authenticationEntryPoint( authEntryPointJwt );
 
 
-        http.authenticationProvider( authenticationProvider() );
+        //http.authenticationProvider( authenticationProvider() );
 
         http.addFilterBefore( authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class );
 

@@ -5,14 +5,14 @@ import com.evan.lejo.repository.AccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@Component
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final AccountRepository accountRepository;
 

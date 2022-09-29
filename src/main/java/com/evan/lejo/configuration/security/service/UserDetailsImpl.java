@@ -17,21 +17,25 @@ import java.util.stream.Collectors;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
+
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
-    private final Long id;
+    private final long id;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private final String username;
 
     @Json( groups = {
-            @Group( name = GroupType.ADMIN )
+            @Group( name = GroupType.ADMIN ),
+            @Group( name = GroupType.USER )
     } )
     private final String email;
 
@@ -41,7 +45,7 @@ public class UserDetailsImpl implements UserDetails {
     public Collection< ? extends GrantedAuthority > authorities;
 
 
-    public UserDetailsImpl( Long id, String username, String email, String password,
+    public UserDetailsImpl( long id, String username, String email, String password,
                             Collection< ? extends GrantedAuthority > authorities ) {
         this.id          = id;
         this.username    = username;
@@ -72,7 +76,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

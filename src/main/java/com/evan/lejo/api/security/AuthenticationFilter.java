@@ -1,11 +1,15 @@
 package com.evan.lejo.api.security;
 
 import com.evan.lejo.api.security.exception.JwtException;
+import com.evan.lejo.configuration.security.jwt.JwtUtils;
+import com.evan.lejo.configuration.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -20,45 +24,54 @@ import java.util.Optional;
  */
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String                                        BEARER = "Bearer";
     @Autowired
-    protected            com.evan.lejo.api.security.UserAccessResolver userAccessResolver;
+    private JwtUtils jwtUtils;
+
     @Autowired
-    protected            com.evan.lejo.api.security.Security           security;
+    private UserDetailsServiceImpl userDetailsService;
 
 
     @Override
     protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain chain ) throws ServletException, IOException {
         final Optional< String > token = Optional.ofNullable( request.getHeader( HttpHeaders.AUTHORIZATION ) );
 
-        final Authentication authentication;
+        try {
+            String jwt = parseJwt( request );
 
-        if ( token.isPresent()
-                && token.get().startsWith( AuthenticationFilter.BEARER ) ) {
+            if ( jwt != null && jwtUtils.validateJwtToken( jwt ) ) {
+                String username = jwtUtils.getUserNameFromJwtToken( jwt );
 
-            final String bearerToken = token.get().substring( AuthenticationFilter.BEARER.length() + 1 );
+                UserDetails userDetails = userDetailsService.loadUserByUsername( username );
 
-            try {
-                com.evan.lejo.api.security.User user = userAccessResolver.getUser( bearerToken );
-                security.setUser( user );
-
-                authentication = new UsernamePasswordAuthenticationToken(
-                        user,
-                        user,
-                        user.getAuthorities()
-                );
-
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities() );
+                authentication.setDetails( new WebAuthenticationDetailsSource().buildDetails( request ) );
 
                 SecurityContextHolder.getContext().setAuthentication( authentication );
-            } catch ( JwtException e ) {
-                System.out.println( "AuthenticationFilter " + e );
-                response.sendError( HttpServletResponse.SC_UNAUTHORIZED, e.getMessage() );
-                return;
             }
+        } catch ( JwtException e ) {
+
+            response.sendError( HttpServletResponse.SC_UNAUTHORIZED, e.getMessage() );
+            return;
         }
+
 
         chain.doFilter( request, response );
 
         SecurityContextHolder.getContext().setAuthentication( null );
+    }
+
+
+    private String parseJwt( HttpServletRequest request ) {
+        String headerAuth = request.getHeader( "Authorization" );
+
+        if ( StringUtils.hasText( headerAuth ) && headerAuth.startsWith( "Bearer " ) ) {
+            return headerAuth.substring( 7, headerAuth.length() );
+        }
+
+        return null;
     }
 }

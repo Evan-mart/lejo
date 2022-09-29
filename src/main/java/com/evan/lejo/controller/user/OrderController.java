@@ -56,8 +56,6 @@ public class OrderController {
     public ResponseEntity< Map< String, Object > > getOrderById( @PathVariable( "id" ) long id ) {
         Order order = orderRepository.findOrFail( id );
 
-        //ResourceSecurity.assertAccessAllowed( order );
-
         return ResponseEntity.ok( Encoder.encode( order, GroupType.USER ) );
     }
 
