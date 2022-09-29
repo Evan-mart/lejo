@@ -1,4 +1,4 @@
-package com.evan.lejo.api.security;
+package com.evan.lejo.configuration.security;
 
 import com.evan.lejo.api.json.annotation.Group;
 import com.evan.lejo.api.json.annotation.Json;

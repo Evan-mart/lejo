@@ -1,8 +1,7 @@
 package com.evan.lejo.configuration.security;
 
-import com.evan.lejo.api.security.AuthenticationFilter;
 import com.evan.lejo.configuration.security.jwt.AuthEntryPointJwt;
-import com.evan.lejo.configuration.security.jwt.AuthTokenFilter;
+import com.evan.lejo.configuration.security.jwt.AuthenticationFilter;
 import com.evan.lejo.configuration.security.jwt.JwtUtils;
 import com.evan.lejo.configuration.security.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -46,12 +45,6 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
-    }
-
-
-    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
@@ -87,7 +80,7 @@ public class SecurityConfig {
             .authenticationEntryPoint( authEntryPointJwt );
 
 
-        //http.authenticationProvider( authenticationProvider() );
+        http.authenticationProvider( authenticationProvider() );
 
         http.addFilterBefore( authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class );
 

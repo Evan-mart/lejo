@@ -1,6 +1,6 @@
 package com.evan.lejo.controller.user.security;
 
-import com.evan.lejo.api.security.Security;
+import com.evan.lejo.configuration.security.Security;
 import com.evan.lejo.configuration.security.response.Message;
 import com.evan.lejo.entity.Order;
 import com.evan.lejo.exception.HttpNotFoundException;

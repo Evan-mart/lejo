@@ -1,10 +1,8 @@
-package com.evan.lejo.api.security;
+package com.evan.lejo.configuration.security.jwt;
 
-import com.evan.lejo.api.security.exception.JwtException;
-import com.evan.lejo.configuration.security.jwt.JwtUtils;
+import com.evan.lejo.configuration.security.exception.JwtException;
 import com.evan.lejo.configuration.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * @author Romain Lavabre <romainlavabre98@gmail.com>
@@ -33,7 +30,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain chain ) throws ServletException, IOException {
-        final Optional< String > token = Optional.ofNullable( request.getHeader( HttpHeaders.AUTHORIZATION ) );
 
         try {
             String jwt = parseJwt( request );

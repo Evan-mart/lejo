@@ -1,4 +1,4 @@
-package com.evan.lejo.api.security;
+package com.evan.lejo.configuration.security;
 
 import java.util.Set;
 
