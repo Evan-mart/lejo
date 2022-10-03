@@ -27,6 +27,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    protected com.evan.lejo.configuration.security.UserAccessResolver userAccessResolver;
+
+    @Autowired
+    protected com.evan.lejo.configuration.security.Security security;
+
 
     @Override
     protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain chain ) throws ServletException, IOException {
@@ -38,6 +44,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 String username = jwtUtils.getUserNameFromJwtToken( jwt );
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername( username );
+
+                com.evan.lejo.configuration.security.User user = userAccessResolver.getUser( jwt );
+                security.setUser( user );
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(

@@ -17,15 +17,18 @@ import java.util.Set;
 public class User {
 
     private final Set< String > roles;
+
     @Json( groups = {
             @Group
     } )
-    private       long          id;
+    private long id;
+
     @Json( groups = {
             @Group
     } )
-    private       String        authenticationId;
-    private       String        username;
+    private String authenticationId;
+    
+    private String username;
 
 
     public User() {

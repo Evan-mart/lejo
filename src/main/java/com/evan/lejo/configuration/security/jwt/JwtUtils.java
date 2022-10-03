@@ -6,9 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
@@ -27,12 +30,20 @@ public class JwtUtils {
     public String generateJwtToken( Authentication authentication ) {
 
         UserDetailsImpl userPrincipal = ( UserDetailsImpl ) authentication.getPrincipal();
-        
+
+        List< String > roles = new ArrayList<>();
+
+        for ( GrantedAuthority grantedAuthority : userPrincipal.getAuthorities() ) {
+            roles.add( grantedAuthority.getAuthority() );
+        }
+
         return Jwts.builder()
                    .setSubject( userPrincipal.getUsername() )
                    .setIssuedAt( new Date() )
                    .setExpiration( new Date( System.currentTimeMillis() + jwtExpirationMs ) )
-                   .signWith( SignatureAlgorithm.HS512, jwtSecret )
+                   .claim( "user_id", userPrincipal.getId() )
+                   .claim( "roles", roles )
+                   .signWith( SignatureAlgorithm.HS256, jwtSecret )
                    .compact();
     }
 

@@ -27,6 +27,7 @@ public class AccessResolver {
 
 
     boolean hasAccess( Order order, Long account_id ) {
+        System.out.println( "account id :" + account_id );
         Account account = accountRepository.findOrFail( account_id );
 
         List< Order > orders = orderRepository.findByAccountId( account_id );

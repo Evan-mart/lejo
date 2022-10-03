@@ -6,12 +6,14 @@ import com.evan.lejo.api.json.Encoder;
 import com.evan.lejo.api.request.Request;
 import com.evan.lejo.api.storage.data.DataStorageHandler;
 import com.evan.lejo.configuration.json.GroupType;
+import com.evan.lejo.controller.user.security.ResourceSecurity;
 import com.evan.lejo.entity.Order;
 import com.evan.lejo.repository.AccountRepository;
 import com.evan.lejo.repository.DishRepository;
 import com.evan.lejo.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 @RestController( "UserOrdersController" )
 @RequestMapping( "/lejo/users" )
+@EnableGlobalMethodSecurity( prePostEnabled = true )
 public class OrderController {
 
     protected final Create< Order >    createOrder;
@@ -55,6 +58,8 @@ public class OrderController {
     @GetMapping( "/orders/{id:[0-9]+}" )
     public ResponseEntity< Map< String, Object > > getOrderById( @PathVariable( "id" ) long id ) {
         Order order = orderRepository.findOrFail( id );
+
+        ResourceSecurity.assertAccessAllowed( order );
 
         return ResponseEntity.ok( Encoder.encode( order, GroupType.USER ) );
     }

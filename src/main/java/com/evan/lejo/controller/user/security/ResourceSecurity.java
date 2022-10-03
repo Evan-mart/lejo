@@ -2,8 +2,10 @@ package com.evan.lejo.controller.user.security;
 
 import com.evan.lejo.configuration.security.Security;
 import com.evan.lejo.configuration.security.response.Message;
+import com.evan.lejo.entity.Account;
 import com.evan.lejo.entity.Order;
 import com.evan.lejo.exception.HttpNotFoundException;
+import com.evan.lejo.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,20 +14,18 @@ import org.springframework.stereotype.Service;
 @Service( "UserResourceSecurity" )
 public class ResourceSecurity {
 
-    private static  ResourceSecurity instance;
-    protected final Security         security;
-    protected final AccessResolver   accessResolver;
-    protected final Cache            cache;
+    private static  ResourceSecurity  instance;
+    protected final Security          security;
+    protected final AccountRepository accountRepository;
 
 
     public ResourceSecurity(
             Security security,
-            AccessResolver accessResolver,
-            Cache cache ) {
-        this.security       = security;
-        this.accessResolver = accessResolver;
-        this.cache          = cache;
-        instance            = this;
+            AccountRepository accountRepository
+    ) {
+        this.security          = security;
+        this.accountRepository = accountRepository;
+        instance               = this;
     }
 
 
@@ -70,17 +70,19 @@ public class ResourceSecurity {
 
 
     public static void assertAccessAllowed( Order order ) {
-        if ( instance.cache.isContains( Order.class, order.getId(), instance.security.getId() ) ) {
-            return;
+        instance.assertOrderEquals( order );
+    }
+
+
+    private void assertOrderEquals( Order order ) {
+        Account account = accountRepository.findOrFail( security.getId() );
+
+        for ( Order accountOrder : account.getOrders() ) {
+            if ( accountOrder == order ) {
+                return;
+            }
+
+            throw new HttpNotFoundException( Message.RESOURCE_NOT_FOUND );
         }
-
-        boolean hasAccess = instance.accessResolver.hasAccess( order, instance.security.getId() );
-
-        if ( hasAccess ) {
-            instance.cache.write( Order.class, order.getId(), instance.security.getId() );
-            return;
-        }
-
-        throw new HttpNotFoundException( Message.RESOURCE_NOT_FOUND );
     }
 }

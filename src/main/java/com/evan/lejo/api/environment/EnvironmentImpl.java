@@ -18,8 +18,8 @@ public class EnvironmentImpl implements Environment {
 
     @Override
     public String getEnv( final String env ) {
-        //assert env != null && !env.isBlank() : "variable env should not be null or blank";
-       
+        assert env != null && !env.isBlank() : "variable env should not be null or blank";
+
         return this.environment.getProperty( env );
     }
 }
