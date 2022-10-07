@@ -58,7 +58,7 @@ public class JwtUtils {
 
 
     public boolean validateJwtToken( String authToken ) {
-
+        System.out.println( authToken + " tooooooookkkkkeeeeennnnnnn" );
         try {
             Jwts.parser()
                 .setSigningKey( jwtSecret )

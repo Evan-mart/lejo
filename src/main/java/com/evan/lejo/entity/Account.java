@@ -23,14 +23,14 @@ public class Account {
     } )
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private long id;
+    protected long id;
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),
             @Group( name = GroupType.USER )
     } )
     @Column( name = "username", nullable = false )
-    private String username;
+    protected String username;
 
     @Json( groups = {
             @Group( name = GroupType.ADMIN ),

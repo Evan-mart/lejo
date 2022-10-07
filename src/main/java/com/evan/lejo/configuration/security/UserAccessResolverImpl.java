@@ -57,13 +57,7 @@ public class UserAccessResolverImpl implements com.evan.lejo.configuration.secur
     private Jws< Claims > signAndGetClaims( String token ) throws JwtException {
 
         try {
-/*            X509EncodedKeySpec keySpec =
-                    new X509EncodedKeySpec( Base64.getDecoder().decode( environment.getEnv( Variable.SECURITY_PUBLIC_KEY ) ) );
-            System.out.println( "sign & keySpec : " + Arrays.toString( keySpec.getEncoded() ) );
-            KeyFactory fact = KeyFactory.getInstance( "RSA" );
-            System.out.println( "sign & fact : " + fact.getAlgorithm() );
-            PublicKey pubKey = fact.generatePublic( keySpec );
-            System.out.println( "sign & pubKey : " + pubKey );*/
+
 
             return Jwts.parser()
                        .setSigningKey( jwtSecret )
