@@ -38,19 +38,19 @@ import java.util.stream.Collectors;
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
 @RestController
-@RequestMapping( "lejo/auth" )
+@RequestMapping("lejo/auth")
 public class AuthController {
-    protected final Create< Account >     createAccount;
-    protected final AccountRepository     accountRepository;
-    protected final DataStorageHandler    dataStorageHandler;
-    protected final RoleRepository        roleRepository;
-    protected final PasswordEncoder       passwordEncoder;
+    protected final Create<Account> createAccount;
+    protected final AccountRepository accountRepository;
+    protected final DataStorageHandler dataStorageHandler;
+    protected final RoleRepository roleRepository;
+    protected final PasswordEncoder passwordEncoder;
     protected final AuthenticationManager authenticationManager;
-    protected final JwtUtils              jwtUtils;
+    protected final JwtUtils jwtUtils;
 
 
     public AuthController(
-            Create< Account > createAccount,
+            Create<Account> createAccount,
             AccountRepository accountRepository,
             DataStorageHandler dataStorageHandler,
             RoleRepository roleRepository,
@@ -58,33 +58,34 @@ public class AuthController {
             AuthenticationManager authenticationManager,
             JwtUtils jwtUtils
     ) {
-        this.createAccount         = createAccount;
-        this.accountRepository     = accountRepository;
-        this.dataStorageHandler    = dataStorageHandler;
-        this.roleRepository        = roleRepository;
-        this.passwordEncoder       = passwordEncoder;
+        this.createAccount = createAccount;
+        this.accountRepository = accountRepository;
+        this.dataStorageHandler = dataStorageHandler;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.jwtUtils              = jwtUtils;
+        this.jwtUtils = jwtUtils;
     }
 
 
     @Transactional
-    @PostMapping( "/signin" )
-    public ResponseEntity< ? > authenticateUser( @Valid @RequestBody LoginRequest loginRequest ) {
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken( loginRequest.getUsername(), loginRequest.getPassword() )
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
-        SecurityContextHolder.getContext().setAuthentication( authentication );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtUtils.generateJwtToken( authentication );
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDetailsImpl userDetails = ( UserDetailsImpl ) authentication.getPrincipal();
 
-        List< String > roles = userDetails.getAuthorities()
-                                          .stream()
-                                          .map( item -> item.getAuthority() )
-                                          .collect( Collectors.toList() );
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        List<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
 
         JwtResponse jwtResponse = new JwtResponse(
                 jwt,
@@ -95,43 +96,43 @@ public class AuthController {
         );
 
         return ResponseEntity
-                .ok( jwtResponse );
+                .ok(jwtResponse);
     }
 
 
     @Transactional
-    @PostMapping( "/register" )
-    public ResponseEntity< Map< String, Object > > registerUser( @Valid @RequestBody SignupRequest signUpRequest ) {
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Object>> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
-        if ( accountRepository.existsByEmail( signUpRequest.getEmail() ) ) {
+        if (accountRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body( Encoder.encode( new MessageResponse( "Erreur: cet email existe déjà !" ), GroupType.ADMIN ) );
+                    .body(Encoder.encode(new MessageResponse("Erreur: cet email existe déjà !"), GroupType.ADMIN));
         }
 
         String username = signUpRequest.getUsername();
-        String email    = signUpRequest.getEmail();
+        String email = signUpRequest.getEmail();
         String password = signUpRequest.getPassword();
 
-        List< Role > roles     = new ArrayList<>();
-        Role         userRoles = roleRepository.findByName( AuthRole.ROLE_USER );
-        roles.add( userRoles );
+        List<Role> roles = new ArrayList<>();
+        Role userRoles = roleRepository.findByName(AuthRole.ROLE_USER);
+        roles.add(userRoles);
 
         Account account = new Account();
 
         account
-                .setUsername( username )
-                .setEmail( email )
-                .setPassword( passwordEncoder.encode( password ) );
+                .setUsername(username)
+                .setEmail(email)
+                .setPassword(passwordEncoder.encode(password));
 
-        account.setRoles( roles );
+        account.setRoles(roles);
 
-        accountRepository.persist( account );
+        accountRepository.persist(account);
 
         dataStorageHandler.save();
 
         return ResponseEntity
-                .status( HttpStatus.CREATED )
-                .body( Encoder.encode( account, GroupType.ADMIN ) );
+                .status(HttpStatus.CREATED)
+                .body(Encoder.encode(account, GroupType.ADMIN));
     }
 }

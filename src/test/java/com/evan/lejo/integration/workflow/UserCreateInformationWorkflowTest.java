@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.FluxExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -28,11 +27,10 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@ActiveProfiles( "test" )
-@Sql( scripts = "classpath:sql-tests/default.sql" )
-@DirtiesContext( classMode = DirtiesContext.ClassMode.BEFORE_CLASS )
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserCreateInformationWorkflowTest {
 
     @Autowired
@@ -51,9 +49,9 @@ public class UserCreateInformationWorkflowTest {
     @BeforeEach
     public void setup() {
         User user = new User();
-        user.addRole( AuthRole.ROLE_USER );
+        user.addRole(AuthRole.ROLE_USER);
 
-        Mockito.when( userAccessResolver.getUser( Mockito.anyString() ) ).thenReturn( user );
+        Mockito.when(userAccessResolver.getUser(Mockito.anyString())).thenReturn(user);
 
         initMock();
     }
@@ -61,27 +59,27 @@ public class UserCreateInformationWorkflowTest {
 
     @Test
     public void entryPoint() {
-        Account account = accountRepository.findOrFail( 2L );
+        Account account = accountRepository.findOrFail(2L);
 
-        createInformation( account );
+        createInformation(account);
 
-        Map< String, Object > accountInformation = getAccountInformation( 2L );
+        Map<String, Object> accountInformation = getAccountInformation(2L);
 
-        Assertions.assertEquals( 2L, Cast.getLong( accountInformation.get( "account_id" ) ) );
+        Assertions.assertEquals(2L, Cast.getLong(accountInformation.get("account_id")));
     }
 
 
-    private void createInformation( Account account ) {
+    private void createInformation(Account account) {
         webTestClient
                 .post()
-                .uri( "/lejo/users/accounts/" + account.getId() + "/account_informations" )
-                .header( "Authorization", "Bearer mocked" )
-                .bodyValue( Map.of(
-                        "mobile", "0601020304",
-                        "address", "rue chez jp",
-                        "city", "jpcity",
-                        "post_code", "22555"
-                            )
+                .uri("/lejo/users/accounts/" + account.getId() + "/account_informations")
+                .header("Authorization", "Bearer mocked")
+                .bodyValue(Map.of(
+                                "mobile", "0601020304",
+                                "address", "rue chez jp",
+                                "city", "jpcity",
+                                "post_code", "22555"
+                        )
                 )
                 .exchange()
                 .expectStatus()
@@ -89,30 +87,30 @@ public class UserCreateInformationWorkflowTest {
     }
 
 
-    private Map< String, Object > getAccountInformation( long id ) {
-        FluxExchangeResult< Map > result =
+    private Map<String, Object> getAccountInformation(long id) {
+        FluxExchangeResult<Map> result =
                 webTestClient
                         .get()
-                        .uri( "/lejo/users/accounts/" + id + "/account_informations" )
-                        .header( "Authorization", "Bearer mocked" )
+                        .uri("/lejo/users/accounts/" + id + "/account_informations")
+                        .header("Authorization", "Bearer mocked")
                         .exchange()
-                        .returnResult( Map.class );
+                        .returnResult(Map.class);
 
         return result.getResponseBody().blockFirst();
     }
 
 
     private void initMock() {
-        Mockito.when( accountRepository.findOrFail( Mockito.anyLong() ) )
-               .thenReturn( MockAccount.build( Map.of(
-                       "id", 2,
-                       "username", "pj",
-                       "email", "jp@gmail.com",
-                       "password", "0000",
-                       "created_at", ZonedDateTime.now().toString(),
-                       "last_connection", ZonedDateTime.now().toString(),
-                       "roles", "ROLE-USER",
-                       "orders", "1"
-               ) ) );
+        Mockito.when(accountRepository.findOrFail(Mockito.anyLong()))
+                .thenReturn(MockAccount.build(Map.of(
+                        "id", 2,
+                        "username", "pj",
+                        "email", "jp@gmail.com",
+                        "password", "0000",
+                        "created_at", ZonedDateTime.now().toString(),
+                        "last_connection", ZonedDateTime.now().toString(),
+                        "roles", "ROLE-USER",
+                        "orders", "1"
+                )));
     }
 }

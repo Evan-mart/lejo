@@ -18,63 +18,63 @@ import java.util.List;
  */
 @Component
 public class JwtUtils {
-    private static final Logger logger = LoggerFactory.getLogger( JwtUtils.class );
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value( "${evan.app.jwtSecret}" )
+    @Value("${evan.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value( "${evan.app.jwtExpirationMs}" )
+    @Value("${evan.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
 
-    public String generateJwtToken( Authentication authentication ) {
+    public String generateJwtToken(Authentication authentication) {
 
-        UserDetailsImpl userPrincipal = ( UserDetailsImpl ) authentication.getPrincipal();
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-        List< String > roles = new ArrayList<>();
+        List<String> roles = new ArrayList<>();
 
-        for ( GrantedAuthority grantedAuthority : userPrincipal.getAuthorities() ) {
-            roles.add( grantedAuthority.getAuthority() );
+        for (GrantedAuthority grantedAuthority : userPrincipal.getAuthorities()) {
+            roles.add(grantedAuthority.getAuthority());
         }
 
         return Jwts.builder()
-                   .setSubject( userPrincipal.getUsername() )
-                   .setIssuedAt( new Date() )
-                   .setExpiration( new Date( System.currentTimeMillis() + jwtExpirationMs ) )
-                   .claim( "user_id", userPrincipal.getId() )
-                   .claim( "roles", roles )
-                   .signWith( SignatureAlgorithm.HS256, jwtSecret )
-                   .compact();
+                .setSubject(userPrincipal.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .claim("user_id", userPrincipal.getId())
+                .claim("roles", roles)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
     }
 
 
-    public String getUserNameFromJwtToken( String token ) {
+    public String getUserNameFromJwtToken(String token) {
         return Jwts.parser()
-                   .setSigningKey( jwtSecret )
-                   .parseClaimsJws( token )
-                   .getBody()
-                   .getSubject();
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
 
-    public boolean validateJwtToken( String authToken ) {
-        System.out.println( authToken + " tooooooookkkkkeeeeennnnnnn" );
+    public boolean validateJwtToken(String authToken) {
+
         try {
             Jwts.parser()
-                .setSigningKey( jwtSecret )
-                .parseClaimsJws( authToken );
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(authToken);
 
             return true;
-        } catch ( SignatureException e ) {
-            logger.error( "Invalid JWT signature: {}", e.getMessage() );
-        } catch ( MalformedJwtException e ) {
-            logger.error( "Invalid JWT token: {}", e.getMessage() );
-        } catch ( ExpiredJwtException e ) {
-            logger.error( "JWT token is expired: {}", e.getMessage() );
-        } catch ( UnsupportedJwtException e ) {
-            logger.error( "JWT token is unsupported: {}", e.getMessage() );
-        } catch ( IllegalArgumentException e ) {
-            logger.error( "JWT claims string is empty: {}", e.getMessage() );
+        } catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            logger.error("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
         }
 
         return false;

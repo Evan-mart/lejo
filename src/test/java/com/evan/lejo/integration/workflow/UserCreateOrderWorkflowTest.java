@@ -17,6 +17,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -29,11 +31,11 @@ import java.util.Map;
 /**
  * @author Evan Martinez <martinez.evan@orange.fr>
  */
-@SpringBootTest( webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@ActiveProfiles( "test" )
-@TestPropertySource( locations = "classpath:application-test.properties" )
-@DirtiesContext( classMode = DirtiesContext.ClassMode.BEFORE_CLASS )
+@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class UserCreateOrderWorkflowTest {
 
     @Autowired
@@ -54,66 +56,73 @@ public class UserCreateOrderWorkflowTest {
     @MockBean
     private OrderRepository orderRepository;
 
+    @MockBean
+    private Authentication authentication;
+
 
     @BeforeEach
     public void setup() {
         User user = new User();
-        user.addRole( AuthRole.ROLE_USER );
+        user.addRole(AuthRole.ROLE_USER);
 
-        Mockito.when( userAccessResolver.getUser( Mockito.anyString() ) )
-               .thenReturn( user );
+        Mockito.when(userAccessResolver.getUser(Mockito.anyString()))
+                .thenReturn(user);
 
         initMock();
     }
 
 
     @Test
-    @DisplayName( "As a user, I should create an order" )
+    @DisplayName("As a user, I should create an order")
     public void EntryPoint() {
 
         createOrder();
 
-        Map< String, Object > order = getOrder();
+        Map<String, Object> order = getOrder();
 
-        Assertions.assertEquals( 1L, order.get( "account_id" ) );
+        Assertions.assertEquals(1L, order.get("account_id"));
     }
 
 
     private void createOrder() {
+        String token = jwtUtils.generateJwtToken(
+                new UsernamePasswordAuthenticationToken("test-user", "P4ssword")
+        );
+
+
         webTestClient
                 .post()
-                .uri( "/lejo/users/orders" )
-                //.header( "Authorization", "Bearer mocked" )
-                .header( "Authorization", "Bearer mocked" )
-                .bodyValue( Map.of(
+                .uri("/lejo/users/orders")
+                .header("Authorization", "Bearer " + token)
+                .bodyValue(Map.of(
                         "account_id", 1,
                         "status", 0,
                         "created_at", ZonedDateTime.now().toString()
-                ) )
+                ))
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful();
     }
 
 
-    private Map< String, Object > getOrder() {
-        FluxExchangeResult< Map > result =
+    private Map<String, Object> getOrder() {
+        FluxExchangeResult<Map> result =
                 webTestClient
                         .get()
-                        .uri( "/lejo/users/accounts/1/orders" )
-                        .header( "Authorization", "Bearer mocked" )
+                        .uri("/lejo/users/accounts/1/orders")
+                        .header("Authorization", "Bearer mocked")
                         .exchange()
-                        .returnResult( Map.class );
+                        .returnResult(Map.class);
 
         return result.getResponseBody().blockFirst();
     }
 
 
     private void initMock() {
-        Mockito.when( accountRepository.findOrFail( Mockito.anyLong() ) )
-               .thenReturn( MockAccount.build( Map.of(
-                       "id", 1L,
-                       "username", "toto"
-               ) ) );
+        Mockito.when(accountRepository.findOrFail(Mockito.anyLong()))
+                .thenReturn(MockAccount.build(Map.of(
+                        "id", 1L,
+                        "username", "toto"
+                )));
     }
 }
